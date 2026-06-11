@@ -34,7 +34,7 @@ footer{color:var(--muted);font-size:11px;padding:0 22px 34px;line-height:1.6}
 </style></head><body>
 <header><div>
 <h1>Post-Sales CX &mdash; Freshchat Agent Ranking</h1>
-<div class="sub">36 agents &middot; June MTD &amp; daily &middot; ranked by weighted rating &middot; generated 2026-06-11 14:13 UTC</div>
+<div class="sub">36 agents &middot; June MTD &amp; daily &middot; ranked by weighted rating &middot; generated 2026-06-11 14:24 UTC</div>
 </div>
 <div class="controls">
 <span><label>Date</label><select id="dateSel"></select></span>
@@ -118,7 +118,7 @@ function render(){
    else {td.innerHTML=(v==null?0:v)+(c.rate?badge(r._rt[c.rate]):'');}
    tr.appendChild(td);});
   tb.appendChild(tr);});
- const act=rs.filter(r=>(r.assigned||0)>0);
+ const act=rs.filter(r=>(r.total_bucket||0)>0);
  const sb=act.reduce((a,r)=>a+(r.open_bucket||0),0),sr=act.reduce((a,r)=>a+(r.resolved_cum||0),0);
  const scs=ranked.map(r=>r.score);const avgs=scs.length?(scs.reduce((a,b)=>a+b,0)/scs.length):null;
  const med=arr=>{const a=arr.filter(x=>x!=null).slice().sort((x,y)=>x-y);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;};
@@ -143,7 +143,7 @@ function boot(){
  fetch('https://raw.githubusercontent.com/sejalpatil-png/psdashboard/main/data.json?t='+Date.now())
   .then(r=>r.json()).then(p=>{
     PAYLOAD=p;
-    const sub=document.querySelector('.sub'); if(sub&&p.generated) sub.textContent='Post-sales agents \u00b7 June MTD & daily \u00b7 auto-refreshed \u00b7 data as of '+p.generated+' UTC';
+    const sub=document.querySelector('.sub'); if(sub&&p.generated) sub.textContent='Post-sales agents \u00b7 June MTD & daily \u00b7 auto-refreshed \u00b7 data as of '+p.generated;
     dateSel.innerHTML='';
     (p.dates||[]).forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=(d==='MTD'?'June MTD (overall)':d);dateSel.appendChild(o);});
     dateSel.value='MTD'; render();
