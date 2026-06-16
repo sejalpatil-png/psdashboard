@@ -144,9 +144,13 @@ function boot(){
   .then(r=>r.json()).then(p=>{
     PAYLOAD=p;
     const sub=document.querySelector('.sub'); if(sub&&p.generated){var g=new Date(p.generated.replace(' UTC','Z').replace(' ','T'));var mins=Math.max(0,Math.round((Date.now()-g.getTime())/60000));var ist=g.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',hour12:true});sub.textContent='Post-sales agents \u00b7 auto-refreshed \u00b7 updated '+mins+' min ago ('+ist+' IST)';}
+    var prev=dateSel.value;
     dateSel.innerHTML='';
-    (p.dates||[]).forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=(d==='MTD'?'June MTD (overall)':d);dateSel.appendChild(o);});
-    dateSel.value='MTD'; render();
+    (p.dates||[]).forEach(function(d){var o=document.createElement('option');o.value=d;o.textContent=(d==='MTD'?'June MTD (overall)':d);dateSel.appendChild(o);});
+    var days=(p.dates||[]).filter(function(d){return d!=='MTD';});
+    var today=days.length?days[0]:'MTD';
+    dateSel.value=(prev&&(p.dates||[]).indexOf(prev)>=0)?prev:today;
+    render();
   }).catch(e=>{document.getElementById('note').textContent='Failed to load live data: '+e;});
 }
 boot();
