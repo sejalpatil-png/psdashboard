@@ -126,10 +126,16 @@ function render(){
  const avgCsat=csatVals.length?(csatVals.reduce((a,b)=>a+b,0)/csatVals.length):null;
  const medCsat=med(csatVals);
  const stot=act.reduce((a,r)=>a+(r.total_bucket||0),0);
+ var frtV=rs.filter(function(r){return (r.total_bucket||0)>0;}).map(function(r){return r.first_response_secs;}).filter(function(v){return v!=null;});
+ var avgFrt=frtV.length?frtV.reduce(function(a,b){return a+b;},0)/frtV.length:null;
+ var artV=rs.filter(function(r){return (r.total_bucket||0)>0;}).map(function(r){return r.every_chat_response_secs;}).filter(function(v){return v!=null;});
+ var avgArt=artV.length?artV.reduce(function(a,b){return a+b;},0)/artV.length:null;
  const top3=ranked.slice(0,3).map((r,i)=>(i+1)+'. '+r.name+' ('+r.score.toFixed(2)+')').join('<br>');
  const cards=[
    ['Agents',ranked.length],
    ['Top 3 agents',top3||'-','small'],
+   ['Avg first response',avgFrt==null?'-':fmtDur(Math.round(avgFrt))],
+   ['Avg response (every chat)',avgArt==null?'-':fmtDur(Math.round(avgArt))],
    ['Avg CSAT',avgCsat==null?'-':avgCsat.toFixed(2)],
    ['Median CSAT',medCsat==null?'-':medCsat.toFixed(2)],
    ['Total chats',stot],
