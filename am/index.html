@@ -56,7 +56,7 @@
 <body>
 <div class="wrap">
   <h1>Account Management — Agent Dashboard</h1>
-  <div class="sub">Pulse reach-out forms · Metabase DB13. Utilities booked drive monthly incentives. Window: <b id="windowLabel">—</b> · Data refreshed: <b id="refreshedAt">—</b></div>
+  <div class="sub">Pulse reach-out forms · Metabase DB13. <b>Utilities booked = bookings made on the call (by call date).</b> Tickets &amp; overdue are by assignment date. Window: <b id="windowLabel">—</b> · Data refreshed: <b id="refreshedAt">—</b></div>
 
   <div class="controls">
     <div class="ctrl"><label>From</label><input type="date" id="from" /></div>
@@ -71,19 +71,19 @@
     </div>
     <div class="ctrl"><label>Agent</label><select id="fAgent"><option value="ALL">All agents</option></select></div>
     <div class="ctrl"><label>Touchpoint</label><select id="fBucket"><option value="ALL">All touchpoints</option></select></div>
-    <div class="ctrl"><label>Utility</label><select id="fUtil"><option value="ALL">All utilities</option></select></div>
+    <div class="ctrl"><label>Service type</label><select id="fUtil"><option value="ALL">All services</option></select></div>
   </div>
 
   <div class="kpis">
-    <div class="kpi"><div class="v" id="k_acct">—</div><div class="l">Accounts assigned</div></div>
-    <div class="kpi book"><div class="v" id="k_book">—</div><div class="l" id="k_book_l">Utilities booked</div></div>
+    <div class="kpi"><div class="v" id="k_acct">—</div><div class="l">Accounts assigned (tickets)</div></div>
+    <div class="kpi book"><div class="v" id="k_book">—</div><div class="l">Utilities booked on call</div></div>
     <div class="kpi"><div class="v" id="k_conv">—</div><div class="l">Booked ÷ assigned</div></div>
     <div class="kpi over"><div class="v" id="k_over">—</div><div class="l">Pending / overdue forms</div></div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="util">Utilities by type</div>
-    <div class="tab" data-tab="tp">Touchpoints</div>
+    <div class="tab active" data-tab="tp">Touchpoints</div>
+    <div class="tab" data-tab="avail">Services availed by type</div>
     <div class="tab" data-tab="over">Overdues</div>
     <div class="tab" data-tab="disp">Call dispositions</div>
   </div>
@@ -94,23 +94,19 @@
 </div>
 
 <script>
-// Row schema: [date,agent,bucket, forms_assigned,accts_assigned,pending,submitted,in_call,
-//   u_tele,u_scan,u_tests,u_visit,u_opd,u_ipd,u_other,u_any,
-//   disp_int,disp_dnp,disp_resch,disp_dnd,disp_ign,disp_ww,disp_lang,disp_open,disp_none]
-const I = {date:0,agent:1,bucket:2,forms:3,accts:4,pending:5,submitted:6,incall:7,
-  u_tele:8,u_scan:9,u_tests:10,u_visit:11,u_opd:12,u_ipd:13,u_other:14,u_any:15,
-  d_int:16,d_dnp:17,d_resch:18,d_dnd:19,d_ign:20,d_ww:21,d_lang:22,d_open:23,d_none:24};
+// Schema: [date,agent,bucket, accts(3),pending(4),forms(5),calls(6),bookings(7),
+//   u_tele(8),u_scan(9),u_tests(10),u_visit(11),u_opd(12),u_ipd(13),u_other(14),u_any(15),
+//   d_int(16),d_dnp(17),d_resch(18),d_dnd(19),d_ign(20),d_ww(21),d_lang(22),d_open(23),d_none(24)]
+const I = {date:0,agent:1,bucket:2,accts:3,pending:4,forms:5,calls:6,bookings:7,u_any:15};
 const BUCKETS = ['Day 15','Day 75','Day 150','Day 210','Day 270','OPD Reimbursement','Bad CSAT','Engagement (Inactive)'];
 const UTILS = [[8,'Teleconsult'],[9,'Scanner / HCU'],[10,'Tests (home)'],[11,'Clinic / Network visit'],[12,'OPD reimburse'],[13,'IPD reimburse'],[14,'Other reimburse']];
 const DISP = [[16,'Interested'],[17,'DNP'],[18,'Rescheduled'],[19,'DND'],[20,'Ignored'],[21,'Wait & Watch'],[22,'Lang. Barrier'],[23,'Open'],[24,'No outcome']];
-let RAW=[], META={}, activeTab='util';
+let RAW=[], META={}, activeTab='tp';
 
 function pretty(e){ return e.split(/[._]/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
 function setPreset(p){
-  const dates = [...new Set(RAW.map(r=>r[0]))].sort();
-  if(!dates.length) return;
-  const min=dates[0], max=dates[dates.length-1];
-  let f,t;
+  const dates=[...new Set(RAW.map(r=>r[0]))].sort(); if(!dates.length) return;
+  const min=dates[0], max=dates[dates.length-1]; let f,t;
   if(p==='mtd'){ f=min; t=max; }
   else if(p==='today'){ f=max; t=max; }
   else if(p==='yest'){ const i=Math.max(0,dates.length-2); f=dates[i]; t=dates[i]; }
@@ -119,25 +115,20 @@ function setPreset(p){
 }
 function activeBuckets(){ return BUCKETS.filter(b=>RAW.some(r=>r[2]===b)); }
 function allAgents(){ return [...new Set(RAW.map(r=>r[1]))].sort(); }
-
 function buildFilters(){
   const ag=document.getElementById('fAgent'), bk=document.getElementById('fBucket'), ut=document.getElementById('fUtil');
   ag.innerHTML='<option value="ALL">All agents</option>'+allAgents().map(a=>`<option value="${a}">${pretty(a)}</option>`).join('');
   bk.innerHTML='<option value="ALL">All touchpoints</option>'+activeBuckets().map(b=>`<option value="${b}">${b}</option>`).join('');
-  ut.innerHTML='<option value="ALL">All utilities</option>'+UTILS.map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
+  ut.innerHTML='<option value="ALL">All services</option>'+UTILS.map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
 }
 function rows(){
   const fa=document.getElementById('fAgent').value, fb=document.getElementById('fBucket').value;
   const from=document.getElementById('from').value, to=document.getElementById('to').value;
   return RAW.filter(r=> r[0]>=from && r[0]<=to && (fa==='ALL'||r[1]===fa) && (fb==='ALL'||r[2]===fb));
 }
-function utilTotalRow(r){ return UTILS.reduce((s,[k])=>s+(r[k]||0),0); }
-
-// aggregate filtered rows into per-agent {sum metrics, _b:{bucket:summed metrics}}
 function byAgent(rs){
   const m={};
-  for(const r of rs){
-    const ag=r[1], bk=r[2];
+  for(const r of rs){ const ag=r[1], bk=r[2];
     if(!m[ag]) m[ag]={agent:ag, s:new Array(25).fill(0), _b:{}};
     const o=m[ag];
     for(let k=3;k<25;k++) o.s[k]+=r[k];
@@ -151,27 +142,51 @@ function cell(v,cls){ return '<td class="'+(cls||'')+'">'+(v?v.toLocaleString():
 function render(){
   if(!RAW.length) return;
   const rs=rows(); const m=byAgent(rs); const names=Object.keys(m);
-  const fu=document.getElementById('fUtil').value;
-  const ukIdx = fu==='ALL'? null : parseInt(fu,10);
-  let tAcct=0,tOver=0,tBook=0;
-  for(const n of names){ const s=m[n].s; tAcct+=s[I.accts]; tOver+=s[I.pending]; tBook+=(ukIdx===null?UTILS.reduce((x,[k])=>x+s[k],0):s[ukIdx]); }
+  const fu=document.getElementById('fUtil').value; const ukIdx=fu==='ALL'?null:parseInt(fu,10);
+  let tAcct=0,tBook=0,tOver=0;
+  for(const n of names){ const s=m[n].s; tAcct+=s[I.accts]; tBook+=s[I.bookings]; tOver+=s[I.pending]; }
   document.getElementById('k_acct').textContent=tAcct.toLocaleString();
   document.getElementById('k_book').textContent=tBook.toLocaleString();
   document.getElementById('k_over').textContent=tOver.toLocaleString();
   document.getElementById('k_conv').textContent=tAcct?Math.round(1000*tBook/tAcct)/10+'%':'—';
-  document.getElementById('k_book_l').textContent='Utilities booked'+(ukIdx===null?'':' — '+UTILS.find(u=>u[0]===ukIdx)[1]);
   const from=document.getElementById('from').value, to=document.getElementById('to').value;
   document.getElementById('windowLabel').textContent = from===to?from:(from+'  →  '+to);
 
-  if(activeTab==='util') renderUtil(m,names,ukIdx);
-  else if(activeTab==='tp') renderTP(m,names,ukIdx);
+  if(activeTab==='tp') renderTP(m,names);
+  else if(activeTab==='avail') renderAvail(m,names,ukIdx);
   else if(activeTab==='over') renderOver(m,names);
   else renderDisp(m,names);
 }
 
-function renderUtil(m,names,ukIdx){
+function renderTP(m,names){
+  const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
+  const ordered=names.sort((a,b)=>m[b].s[I.bookings]-m[a].s[I.bookings]);
+  let h='<table><thead><tr><th class="agent" rowspan="2">Account Manager</th>'
+   +'<th class="grp-acct tot" colspan="'+(showB.length+1)+'">Tickets (Accounts Assigned)</th>'
+   +'<th class="grp-util tot" colspan="'+(showB.length+1)+'">Utilities Booked (on call)</th></tr><tr>';
+  h+='<th class="grp-acct tot">Total</th>'; for(const b of showB)h+='<th class="grp-acct">'+b+'</th>';
+  h+='<th class="grp-util tot">Total</th>'; for(const b of showB)h+='<th class="grp-util">'+b+'</th>';
+  h+='</tr></thead><tbody>';
+  const Ta={t:0,b:{}},Tu={t:0,b:{}}; for(const b of showB){Ta.b[b]=0;Tu.b[b]=0;}
+  for(const n of ordered){ const o=m[n];
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
+    h+=cell(o.s[I.accts],'tot'); Ta.t+=o.s[I.accts];
+    for(const b of showB){ const v=o._b[b]?o._b[b][I.accts]:0; h+=cell(v); Ta.b[b]+=v; }
+    h+=cell(o.s[I.bookings],'tot'); Tu.t+=o.s[I.bookings];
+    for(const b of showB){ const v=o._b[b]?o._b[b][I.bookings]:0; h+=cell(v); Tu.b[b]+=v; }
+    h+='</tr>';
+  }
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Ta.t.toLocaleString()+'</td>';
+  for(const b of showB)h+='<td>'+Ta.b[b].toLocaleString()+'</td>';
+  h+='<td>'+Tu.t.toLocaleString()+'</td>'; for(const b of showB)h+='<td>'+Tu.b[b].toLocaleString()+'</td>';
+  h+='</tr></tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Tickets = reach-out accounts assigned (by assignment date). Utilities Booked = bookings the agent logged on the call — HCU "book on call" / booking ID — counted on the call date. Total = sum of the touchpoint columns.';
+}
+
+function renderAvail(m,names,ukIdx){
   const ordered=names.sort((a,b)=>UTILS.reduce((x,[k])=>x+m[b].s[k],0)-UTILS.reduce((x,[k])=>x+m[a].s[k],0));
-  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-util tot">Total utilities</th>';
+  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-util tot">Total availed</th>';
   for(const [k,l] of UTILS) h+='<th class="grp-util'+(ukIdx===k?' sel-util':'')+'">'+l+'</th>';
   h+='</tr></thead><tbody>';
   const T={}; for(const[k]of UTILS)T[k]=0; let Tt=0;
@@ -185,54 +200,27 @@ function renderUtil(m,names,ukIdx){
   for(const[k]of UTILS)h+='<td>'+T[k].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
   document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Each utility column = distinct accounts that booked/availed that service on or after their reach-out form date (medicines excluded). Total = sum across types (one account can book several). Scanner/HCU = Even Scanner health checkup; Teleconsult = in-house consults; Tests = home sample collection; Visit = clinic/network OPD visits.';
-}
-
-function renderTP(m,names,ukIdx){
-  const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
-  const metric=(arr)=> ukIdx===null?UTILS.reduce((x,[k])=>x+arr[k],0):(arr[ukIdx]||0);
-  const ordered=names.sort((a,b)=>metric(m[b].s)-metric(m[a].s));
-  let h='<table><thead><tr><th class="agent" rowspan="2">Account Manager</th>'
-   +'<th class="grp-acct tot" colspan="'+(showB.length+1)+'">Accounts Assigned</th>'
-   +'<th class="grp-util tot" colspan="'+(showB.length+1)+'">Utilities Booked'+(ukIdx===null?'':' ('+UTILS.find(u=>u[0]===ukIdx)[1]+')')+'</th></tr><tr>';
-  h+='<th class="grp-acct tot">Total</th>'; for(const b of showB)h+='<th class="grp-acct">'+b+'</th>';
-  h+='<th class="grp-util tot">Total</th>'; for(const b of showB)h+='<th class="grp-util">'+b+'</th>';
-  h+='</tr></thead><tbody>';
-  const Ta={t:0,b:{}},Tu={t:0,b:{}}; for(const b of showB){Ta.b[b]=0;Tu.b[b]=0;}
-  for(const n of ordered){ const o=m[n];
-    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
-    h+=cell(o.s[I.accts],'tot'); Ta.t+=o.s[I.accts];
-    for(const b of showB){ const v=o._b[b]?o._b[b][I.accts]:0; h+=cell(v); Ta.b[b]+=v; }
-    h+=cell(metric(o.s),'tot'); Tu.t+=metric(o.s);
-    for(const b of showB){ const v=o._b[b]?metric(o._b[b]):0; h+=cell(v); Tu.b[b]+=v; }
-    h+='</tr>';
-  }
-  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Ta.t.toLocaleString()+'</td>';
-  for(const b of showB)h+='<td>'+Ta.b[b].toLocaleString()+'</td>';
-  h+='<td>'+Tu.t.toLocaleString()+'</td>'; for(const b of showB)h+='<td>'+Tu.b[b].toLocaleString()+'</td>';
-  h+='</tr></tbody></table>';
-  document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Accounts assigned & utilities booked split by touchpoint. Total = sum of the touchpoint columns (each touchpoint is its own assignment). Utilities = '+(ukIdx===null?'all types':UTILS.find(u=>u[0]===ukIdx)[1])+'.';
+  document.getElementById('legend').innerHTML='Downstream conversion lens: distinct accounts that actually <b>availed</b> each service on/after the reach-out (medicines excluded), attributed by assignment date. This differs from "Utilities booked on call" (the agent’s booking at call time on the Touchpoints tab).';
 }
 
 function renderOver(m,names){
   const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
   const ordered=names.sort((a,b)=>m[b].s[I.pending]-m[a].s[I.pending]);
-  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-over tot">Total overdue</th><th class="tot">Assigned</th><th class="tot">Submitted</th><th class="tot">% done</th>';
+  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-over tot">Total overdue</th><th class="tot">Assigned</th><th class="tot">Done</th><th class="tot">% done</th>';
   for(const b of showB)h+='<th class="grp-over">'+b+'</th>';
   h+='</tr></thead><tbody>';
-  const T={o:0,a:0,s:0,b:{}}; for(const b of showB)T.b[b]=0;
-  for(const n of ordered){ const o=m[n].s; const done=o[I.forms]?Math.round(1000*o[I.submitted]/o[I.forms])/10:0;
+  const T={o:0,a:0,d:0,b:{}}; for(const b of showB)T.b[b]=0;
+  for(const n of ordered){ const s=m[n].s; const done=s[I.forms]-s[I.pending]; const pct=s[I.forms]?Math.round(1000*done/s[I.forms])/10:0;
     h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
-    h+=cell(o[I.pending],'tot grp-over')+cell(o[I.forms],'tot')+cell(o[I.submitted],'tot')+'<td class="tot">'+done+'%</td>';
+    h+=cell(s[I.pending],'tot grp-over')+cell(s[I.forms],'tot')+cell(done,'tot')+'<td class="tot">'+pct+'%</td>';
     for(const b of showB){ const v=m[n]._b[b]?m[n]._b[b][I.pending]:0; h+=cell(v); T.b[b]+=v; }
-    h+='</tr>'; T.o+=o[I.pending]; T.a+=o[I.forms]; T.s+=o[I.submitted];
+    h+='</tr>'; T.o+=s[I.pending]; T.a+=s[I.forms]; T.d+=done;
   }
-  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+T.o.toLocaleString()+'</td><td>'+T.a.toLocaleString()+'</td><td>'+T.s.toLocaleString()+'</td><td>'+(T.a?Math.round(1000*T.s/T.a)/10:0)+'%</td>';
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+T.o.toLocaleString()+'</td><td>'+T.a.toLocaleString()+'</td><td>'+T.d.toLocaleString()+'</td><td>'+(T.a?Math.round(1000*T.d/T.a)/10:0)+'%</td>';
   for(const b of showB)h+='<td>'+T.b[b].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
   document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Overdue = reach-out forms still in draft (call not completed). % done = submitted ÷ assigned forms. Split by touchpoint.';
+  document.getElementById('legend').innerHTML='Overdue = reach-out forms still in draft (call not completed). Done = assigned − overdue. By assignment date, split by touchpoint.';
 }
 
 function renderDisp(m,names){
@@ -249,7 +237,7 @@ function renderDisp(m,names){
   for(const[k]of DISP)h+='<td>'+T[k].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
   document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Call dispositions (form outcome). Calls logged excludes "No outcome". Respects agent &amp; touchpoint filters.';
+  document.getElementById('legend').innerHTML='Call dispositions (form outcome), by call date. Calls logged excludes "No outcome". Respects agent &amp; touchpoint filters.';
 }
 
 ['fAgent','fBucket','fUtil','from','to'].forEach(id=>document.getElementById(id).addEventListener('change',render));
