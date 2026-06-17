@@ -55,17 +55,6 @@
   tr.sub td.agent { background:#fafbfc; font-weight:500; color:#475569; padding-left:26px; }
   tr.sub:hover td, tr.sub:hover td.agent { background:#f3f6ff; }
   .hint { font-size:11px; color:#9ca3af; margin:0 0 8px; }
-  tr.detail > td { padding:0; background:#fbfcfe; box-shadow:none; }
-  .detail-inner { padding:12px 14px 14px; display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
-  .dwrap { min-width:240px; }
-  .dtitle { font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:.04em; margin:0 0 5px; }
-  table.dt { border:1px solid #e5e7eb; border-radius:6px; width:auto; }
-  table.dt th, table.dt td { padding:4px 9px; font-size:11.5px; text-align:center; border-bottom:1px solid #f0f1f3; }
-  table.dt th { background:#f4f5f7; position:static; }
-  table.dt td:first-child, table.dt th:first-child { text-align:left; font-weight:600; }
-  table.dt td.tot, table.dt th.tot { background:#f0f4fb; font-weight:700; }
-  .disp-strip { display:flex; flex-wrap:wrap; gap:7px; max-width:340px; }
-  .chip { background:#eef2ff; color:#3730a3; border-radius:999px; padding:3px 10px; font-size:11px; }
   .legend { font-size:11px; color:#6b7280; margin-top:10px; line-height:1.5; }
   #status { font-size:12px; color:#6b7280; margin:8px 2px; min-height:15px; }
   #err { color:#b91c1c; }
@@ -99,6 +88,13 @@
     <div class="kpi over"><div class="v" id="k_over">—</div><div class="l">Pending / overdue forms</div></div>
   </div>
 
+  <div class="tabs">
+    <div class="tab active" data-tab="util">Utilities by type</div>
+    <div class="tab" data-tab="tp">Touchpoints</div>
+    <div class="tab" data-tab="over">Overdues</div>
+    <div class="tab" data-tab="disp">Call dispositions</div>
+  </div>
+
   <div id="status"></div>
   <div class="panel"><div id="table"></div></div>
   <div class="legend" id="legend"></div>
@@ -114,8 +110,7 @@ const I = {date:0,agent:1,bucket:2,forms:3,accts:4,pending:5,submitted:6,incall:
 const BUCKETS = ['Day 15','Day 75','Day 150','Day 210','Day 270','OPD Reimbursement','Bad CSAT','Engagement (Inactive)'];
 const UTILS = [[8,'Teleconsult'],[9,'Scanner / HCU'],[10,'Tests (home)'],[11,'Clinic / Network visit'],[12,'OPD reimburse'],[13,'IPD reimburse'],[14,'Other reimburse']];
 const DISP = [[16,'Interested'],[17,'DNP'],[18,'Rescheduled'],[19,'DND'],[20,'Ignored'],[21,'Wait & Watch'],[22,'Lang. Barrier'],[23,'Open'],[24,'No outcome']];
-let RAW=[], META={}, expandedTP=new Set();
-window.toggleTP=function(n){ if(expandedTP.has(n))expandedTP.delete(n); else expandedTP.add(n); render(); };
+let RAW=[], META={}, activeTab='util';
 
 function pretty(e){ return e.split(/[._]/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
 function setPreset(p){
@@ -175,62 +170,35 @@ function render(){
   const from=document.getElementById('from').value, to=document.getElementById('to').value;
   document.getElementById('windowLabel').textContent = from===to?from:(from+'  →  '+to);
 
-  renderAll(m,names,ukIdx);
+  if(activeTab==='util') renderUtil(m,names,ukIdx);
+  else if(activeTab==='tp') renderTP(m,names,ukIdx);
+  else if(activeTab==='over') renderOver(m,names);
+  else renderDisp(m,names);
 }
 
-function renderAll(m,names,ukIdx){
-  const utilTot = s=> ukIdx===null?UTILS.reduce((x,[k])=>x+s[k],0):(s[ukIdx]||0);
-  const ordered=names.sort((a,b)=>utilTot(m[b].s)-utilTot(m[a].s));
-  const NCOL=7;
-  let h='<table><thead><tr>'
-    +'<th class="agent">Account Manager</th>'
-    +'<th class="grp-acct tot">Tickets</th>'
-    +'<th class="grp-util tot">Utilities'+(ukIdx===null?'':' ('+UTILS.find(u=>u[0]===ukIdx)[1]+')')+'</th>'
-    +'<th>Conv %</th>'
-    +'<th class="grp-over tot">Overdue</th>'
-    +'<th>% Done</th>'
-    +'<th class="grp-disp tot">Calls logged</th></tr></thead><tbody>';
-  const T={acct:0,util:0,over:0,forms:0,sub:0,logged:0};
-  for(const n of ordered){ const o=m[n], s=o.s; const open=expandedTP.has(n);
-    const u=utilTot(s); const conv=s[I.accts]?Math.round(1000*u/s[I.accts])/10:0;
-    const done=s[I.forms]?Math.round(1000*s[I.submitted]/s[I.forms])/10:0;
-    let logged=0; for(const[k]of DISP){if(k!==24)logged+=s[k];}
-    h+='<tr><td class="agent clk" title="Click for full breakdown" onclick="toggleTP(\''+n+'\')"><span class="caret">'+(open?'▾':'▸')+'</span>'+pretty(n)+'</td>';
-    h+=cell(s[I.accts],'tot grp-acct')+cell(u,'tot grp-util')+'<td>'+conv+'%</td>'+cell(s[I.pending],'tot grp-over')+'<td>'+done+'%</td>'+cell(logged,'tot grp-disp')+'</tr>';
-    if(open) h+='<tr class="detail"><td colspan="'+NCOL+'">'+detailHTML(o,ukIdx)+'</td></tr>';
-    T.acct+=s[I.accts];T.util+=u;T.over+=s[I.pending];T.forms+=s[I.forms];T.sub+=s[I.submitted];T.logged+=logged;
+function renderUtil(m,names,ukIdx){
+  const ordered=names.sort((a,b)=>UTILS.reduce((x,[k])=>x+m[b].s[k],0)-UTILS.reduce((x,[k])=>x+m[a].s[k],0));
+  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-util tot">Total utilities</th>';
+  for(const [k,l] of UTILS) h+='<th class="grp-util'+(ukIdx===k?' sel-util':'')+'">'+l+'</th>';
+  h+='</tr></thead><tbody>';
+  const T={}; for(const[k]of UTILS)T[k]=0; let Tt=0;
+  for(const n of ordered){ const s=m[n].s; const rowTot=UTILS.reduce((x,[k])=>x+s[k],0);
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
+    h+=cell(rowTot,'tot grp-util'); Tt+=rowTot;
+    for(const [k] of UTILS){ h+=cell(s[k],ukIdx===k?'sel-util':''); T[k]+=s[k]; }
+    h+='</tr>';
   }
-  const tconv=T.acct?Math.round(1000*T.util/T.acct)/10:0, tdone=T.forms?Math.round(1000*T.sub/T.forms)/10:0;
-  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+T.acct.toLocaleString()+'</td><td>'+T.util.toLocaleString()+'</td><td>'+tconv+'%</td><td>'+T.over.toLocaleString()+'</td><td>'+tdone+'%</td><td>'+T.logged.toLocaleString()+'</td></tr>';
-  h+='</tbody></table>';
-  document.getElementById('table').innerHTML='<p class="hint">Click any account manager for the full drilldown — tickets &amp; utilities per touchpoint, the kind of utility booked in each touchpoint, and call dispositions. Date / agent / touchpoint / utility filters apply throughout.</p>'+h;
-  document.getElementById('legend').innerHTML='Tickets = reach-out accounts assigned. Utilities booked = '+(ukIdx===null?'sum of all utility types':UTILS.find(u=>u[0]===ukIdx)[1])+' (distinct accounts with that service on/after the reach-out date). Overdue = forms still in draft. Conv % = utilities ÷ tickets. % Done = submitted ÷ assigned forms.';
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Tt.toLocaleString()+'</td>';
+  for(const[k]of UTILS)h+='<td>'+T[k].toLocaleString()+'</td>';
+  h+='</tr></tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Each utility column = distinct accounts that booked/availed that service on or after their reach-out form date (medicines excluded). Total = sum across types (one account can book several). Scanner/HCU = Even Scanner health checkup; Teleconsult = in-house consults; Tests = home sample collection; Visit = clinic/network OPD visits.';
 }
 
-function detailHTML(o,ukIdx){
-  const s=o.s; const fb=document.getElementById('fBucket').value;
-  const showB=(fb==='ALL'?activeBuckets():[fb]);
-  const bu=(b,k)=> o._b[b]?(o._b[b][k]||0):0;
-  const perBucketUtil=b=> ukIdx===null?UTILS.reduce((x,[k])=>x+bu(b,k),0):bu(b,ukIdx);
-  const utilTotAll= ukIdx===null?UTILS.reduce((x,[k])=>x+s[k],0):(s[ukIdx]||0);
-  let t1='<div class="dwrap"><div class="dtitle">Tickets &amp; utilities by touchpoint</div><table class="dt"><thead><tr><th>Metric</th><th class="tot">Total</th>';
-  for(const b of showB)t1+='<th>'+b+'</th>'; t1+='</tr></thead><tbody>';
-  t1+='<tr><td>Tickets</td><td class="tot">'+s[I.accts]+'</td>'; for(const b of showB)t1+='<td>'+bu(b,I.accts)+'</td>'; t1+='</tr>';
-  t1+='<tr><td>Utilities</td><td class="tot">'+utilTotAll+'</td>'; for(const b of showB)t1+='<td>'+perBucketUtil(b)+'</td>'; t1+='</tr>';
-  t1+='<tr><td>Overdue</td><td class="tot">'+s[I.pending]+'</td>'; for(const b of showB)t1+='<td>'+bu(b,I.pending)+'</td>'; t1+='</tr>';
-  t1+='</tbody></table></div>';
-  let t2='<div class="dwrap"><div class="dtitle">Kind of utility booked per touchpoint</div><table class="dt"><thead><tr><th>Utility</th><th class="tot">Total</th>';
-  for(const b of showB)t2+='<th>'+b+'</th>'; t2+='</tr></thead><tbody>';
-  for(const [uk,ul] of UTILS){ let tot=0,rc=''; for(const b of showB){ const v=bu(b,uk); tot+=v; rc+='<td>'+(v||'')+'</td>'; }
-    t2+='<tr'+(ukIdx===uk?' class="sel-util"':'')+'><td>'+ul+'</td><td class="tot">'+(tot||'')+'</td>'+rc+'</tr>'; }
-  t2+='</tbody></table></div>';
-  let t3='<div class="dwrap"><div class="dtitle">Call dispositions</div><div class="disp-strip">';
-  for(const [k,l] of DISP) t3+='<span class="chip">'+l+': <b>'+s[k]+'</b></span>';
-  t3+='</div></div>';
-  return '<div class="detail-inner">'+t1+t2+t3+'</div>';
-}
+let expandedTP=new Set();
+window.toggleTP=function(n){ if(expandedTP.has(n))expandedTP.delete(n); else expandedTP.add(n); render(); };
 
-function renderTP_unused(m,names,ukIdx){
+function renderTP(m,names,ukIdx){
   const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
   const metric=(arr)=> ukIdx===null?UTILS.reduce((x,[k])=>x+arr[k],0):(arr[ukIdx]||0);
   const ordered=names.sort((a,b)=>metric(m[b].s)-metric(m[a].s));
@@ -308,6 +276,11 @@ function renderDisp(m,names){
 
 ['fAgent','fBucket','fUtil','from','to'].forEach(id=>document.getElementById(id).addEventListener('change',render));
 document.querySelectorAll('.presets .btn').forEach(b=>b.addEventListener('click',()=>{ setPreset(b.dataset.preset); render(); }));
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); activeTab=t.dataset.tab; render();
+}));
+
 fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
   RAW=j.rows||j; META=j.meta||{};
   document.getElementById('refreshedAt').textContent = META.refreshed_at || '—';
