@@ -48,13 +48,6 @@
   .grp-disp { background:#e0e7ff !important; color:#3730a3; }
   .muted { color:#c2c7d0; }
   .sel-util { outline:2px solid #f59e0b; outline-offset:-2px; }
-  td.agent.clk { cursor:pointer; }
-  td.agent.clk:hover { color:#1d4ed8; }
-  .caret { display:inline-block; width:12px; color:#9ca3af; font-size:10px; }
-  tr.sub td { background:#fafbfc; color:#475569; font-size:11.5px; }
-  tr.sub td.agent { background:#fafbfc; font-weight:500; color:#475569; padding-left:26px; }
-  tr.sub:hover td, tr.sub:hover td.agent { background:#f3f6ff; }
-  .hint { font-size:11px; color:#9ca3af; margin:0 0 8px; }
   .legend { font-size:11px; color:#6b7280; margin-top:10px; line-height:1.5; }
   #status { font-size:12px; color:#6b7280; margin:8px 2px; min-height:15px; }
   #err { color:#b91c1c; }
@@ -195,46 +188,31 @@ function renderUtil(m,names,ukIdx){
   document.getElementById('legend').innerHTML='Each utility column = distinct accounts that booked/availed that service on or after their reach-out form date (medicines excluded). Total = sum across types (one account can book several). Scanner/HCU = Even Scanner health checkup; Teleconsult = in-house consults; Tests = home sample collection; Visit = clinic/network OPD visits.';
 }
 
-let expandedTP=new Set();
-window.toggleTP=function(n){ if(expandedTP.has(n))expandedTP.delete(n); else expandedTP.add(n); render(); };
-
 function renderTP(m,names,ukIdx){
   const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
   const metric=(arr)=> ukIdx===null?UTILS.reduce((x,[k])=>x+arr[k],0):(arr[ukIdx]||0);
   const ordered=names.sort((a,b)=>metric(m[b].s)-metric(m[a].s));
-  const span=showB.length+1;
   let h='<table><thead><tr><th class="agent" rowspan="2">Account Manager</th>'
-   +'<th class="grp-acct tot" colspan="'+span+'">Tickets (Accounts Assigned)</th>'
-   +'<th class="grp-util tot" colspan="'+span+'">Utilities Booked'+(ukIdx===null?'':' ('+UTILS.find(u=>u[0]===ukIdx)[1]+')')+'</th></tr><tr>';
+   +'<th class="grp-acct tot" colspan="'+(showB.length+1)+'">Accounts Assigned</th>'
+   +'<th class="grp-util tot" colspan="'+(showB.length+1)+'">Utilities Booked'+(ukIdx===null?'':' ('+UTILS.find(u=>u[0]===ukIdx)[1]+')')+'</th></tr><tr>';
   h+='<th class="grp-acct tot">Total</th>'; for(const b of showB)h+='<th class="grp-acct">'+b+'</th>';
   h+='<th class="grp-util tot">Total</th>'; for(const b of showB)h+='<th class="grp-util">'+b+'</th>';
   h+='</tr></thead><tbody>';
   const Ta={t:0,b:{}},Tu={t:0,b:{}}; for(const b of showB){Ta.b[b]=0;Tu.b[b]=0;}
-  for(const n of ordered){ const o=m[n]; const open=expandedTP.has(n);
-    h+='<tr><td class="agent clk" title="Click to see utility types" onclick="toggleTP(\''+n+'\')"><span class="caret">'+(open?'▾':'▸')+'</span>'+pretty(n)+'</td>';
+  for(const n of ordered){ const o=m[n];
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
     h+=cell(o.s[I.accts],'tot'); Ta.t+=o.s[I.accts];
     for(const b of showB){ const v=o._b[b]?o._b[b][I.accts]:0; h+=cell(v); Ta.b[b]+=v; }
     h+=cell(metric(o.s),'tot'); Tu.t+=metric(o.s);
     for(const b of showB){ const v=o._b[b]?metric(o._b[b]):0; h+=cell(v); Tu.b[b]+=v; }
     h+='</tr>';
-    if(open){
-      for(const [uk,ul] of UTILS){
-        let utot=0; const cells=[];
-        for(const b of showB){ const v=o._b[b]?(o._b[b][uk]||0):0; utot+=v; cells.push(v); }
-        h+='<tr class="sub"><td class="agent">↳ '+ul+'</td>';
-        h+='<td class="muted">·</td>'; for(const b of showB) h+='<td class="muted">·</td>';
-        h+='<td class="tot">'+(utot?utot:0)+'</td>';
-        for(const v of cells) h+='<td>'+(v?v:'<span class="muted">0</span>')+'</td>';
-        h+='</tr>';
-      }
-    }
   }
   h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Ta.t.toLocaleString()+'</td>';
   for(const b of showB)h+='<td>'+Ta.b[b].toLocaleString()+'</td>';
   h+='<td>'+Tu.t.toLocaleString()+'</td>'; for(const b of showB)h+='<td>'+Tu.b[b].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
-  document.getElementById('table').innerHTML='<p class="hint">Click any account manager to expand the kind of utilities booked (teleconsult, scanner/HCU, tests, visit, OPD/IPD reimburse) within each touchpoint.</p>'+h;
-  document.getElementById('legend').innerHTML='Tickets = reach-out accounts assigned, split by touchpoint. Utilities Booked = distinct accounts that booked a service, split by touchpoint. Total = sum of the touchpoint columns. Expand a manager to see the utility-type breakdown per touchpoint.';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Accounts assigned & utilities booked split by touchpoint. Total = sum of the touchpoint columns (each touchpoint is its own assignment). Utilities = '+(ukIdx===null?'all types':UTILS.find(u=>u[0]===ukIdx)[1])+'.';
 }
 
 function renderOver(m,names){
