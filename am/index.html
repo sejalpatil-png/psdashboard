@@ -43,8 +43,11 @@
   td.tot, th.tot { font-weight:700; background:#f0f4fb; }
   tr.total-row td { font-weight:800; background:#eef2ff; border-top:2px solid #c7d2fe; }
   tr.total-row td.agent { background:#e7edff; }
+  .grp-open { background:#fde9d6 !important; color:#7c3a00; }
+  .grp-call { background:#dbeafe !important; color:#1e40af; }
+  .grp-fill { background:#e6e9f5 !important; color:#3730a3; }
+  .grp-util { background:#d7f5dd !important; color:#166534; }
   .grp-acct { background:#fce7d3 !important; color:#7c3a00; }
-  .grp-util { background:#fef0d3 !important; color:#7a5200; }
   .grp-over { background:#fcdedd !important; color:#9b1c1c; }
   .grp-disp { background:#e0e7ff !important; color:#3730a3; }
   .muted { color:#c2c7d0; }
@@ -57,15 +60,15 @@
 <body>
 <div class="wrap">
   <h1>Account Management — Agent Dashboard</h1>
-  <div class="sub">Pulse reach-out (Metabase #7590) · overdues (#6703). <b>Utilities booked = a service the member availed after the reach-out</b> (total). Window: <b id="windowLabel">—</b> · Data refreshed: <b id="refreshedAt">—</b></div>
+  <div class="sub">Pulse reach-out (#7590) · open backlog &amp; overdues (#6703). Funnel: tickets open → called → forms filled → utilities booked. Window: <b id="windowLabel">—</b> · Refreshed: <b id="refreshedAt">—</b></div>
 
   <div class="controls">
     <div class="ctrl"><label>From</label><input type="date" id="from" /></div>
     <div class="ctrl"><label>To</label><input type="date" id="to" /></div>
     <div class="ctrl"><label>Quick range</label>
       <div class="presets">
+        <button class="btn" data-preset="today">Today</button>
         <button class="btn" data-preset="mtd">MTD</button>
-        <button class="btn" data-preset="today">Latest day</button>
         <button class="btn" data-preset="yest">Prev day</button>
         <button class="btn" data-preset="7d">Last 7d</button>
       </div>
@@ -76,16 +79,16 @@
   </div>
 
   <div class="kpis">
-    <div class="kpi"><div class="v" id="k_acct">—</div><div class="l">Accounts assigned</div></div>
+    <div class="kpi"><div class="v" id="k_acct">—</div><div class="l">Accounts assigned (window)</div></div>
     <div class="kpi book"><div class="v" id="k_book">—</div><div class="l">Utilities booked (total)</div></div>
     <div class="kpi f1"><div class="v" id="k_conn">—</div><div class="l">Assigned → Connected %</div></div>
     <div class="kpi f2"><div class="v" id="k_bp">—</div><div class="l">Connected → Booked %</div></div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="tp">Touchpoints</div>
+    <div class="tab active" data-tab="funnel">Activity funnel</div>
+    <div class="tab" data-tab="tp">Touchpoints</div>
     <div class="tab" data-tab="util">Utilities by type</div>
-    <div class="tab" data-tab="over">Overdues</div>
     <div class="tab" data-tab="disp">Call dispositions</div>
   </div>
 
@@ -102,9 +105,8 @@ const I = {date:0,agent:1,bucket:2,accts:3,pending:4,forms:5,calls:6,booked:15};
 const BUCKETS = ['Day 15','Day 75','Day 150','Day 210','Day 270','OPD Reimbursement','Bad CSAT','Engagement (Inactive)'];
 const UTILS = [[8,'Teleconsult'],[9,'Scanner / HCU'],[10,'Tests (home)'],[11,'Clinic / Network visit'],[12,'OPD reimburse'],[13,'IPD reimburse'],[14,'Other reimburse']];
 const DISP = [[16,'Interested'],[17,'DNP'],[18,'Rescheduled'],[19,'DND'],[20,'Ignored'],[21,'Wait & Watch'],[22,'Lang. Barrier'],[23,'Open'],[24,'No outcome']];
-// connected = reached the member (any outcome except DNP, Ignored, No-outcome)
-const CONN = [16,18,19,21,22,23];
-let RAW=[], META={}, activeTab='tp';
+const CONN = [16,18,19,21,22,23];   // connected = member reached
+let RAW=[], OPEN=[], META={}, activeTab='funnel';
 
 function pretty(e){ return e.split(/[._]/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
 function connOf(s){ return CONN.reduce((x,k)=>x+s[k],0); }
@@ -116,27 +118,37 @@ function setPreset(p){
   else { const i=Math.max(0,dates.length-7); f=dates[i]; t=max; }
   document.getElementById('from').value=f; document.getElementById('to').value=t;
 }
-function activeBuckets(){ return BUCKETS.filter(b=>RAW.some(r=>r[2]===b)); }
-function allAgents(){ return [...new Set(RAW.map(r=>r[1]))].sort(); }
+function activeBuckets(){ const s=new Set(RAW.map(r=>r[2])); OPEN.forEach(o=>s.add(o[1])); return BUCKETS.filter(b=>s.has(b)); }
+function allAgents(){ const s=new Set(RAW.map(r=>r[1])); OPEN.forEach(o=>s.add(o[0])); return [...s].sort(); }
 function buildFilters(){
   const ag=document.getElementById('fAgent'), bk=document.getElementById('fBucket'), ut=document.getElementById('fUtil');
   ag.innerHTML='<option value="ALL">All agents</option>'+allAgents().map(a=>`<option value="${a}">${pretty(a)}</option>`).join('');
   bk.innerHTML='<option value="ALL">All touchpoints</option>'+activeBuckets().map(b=>`<option value="${b}">${b}</option>`).join('');
   ut.innerHTML='<option value="ALL">All utilities</option>'+UTILS.map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
 }
+function fAgentV(){return document.getElementById('fAgent').value;}
+function fBucketV(){return document.getElementById('fBucket').value;}
 function rows(){
-  const fa=document.getElementById('fAgent').value, fb=document.getElementById('fBucket').value;
-  const from=document.getElementById('from').value, to=document.getElementById('to').value;
+  const fa=fAgentV(), fb=fBucketV(); const from=document.getElementById('from').value, to=document.getElementById('to').value;
   return RAW.filter(r=> r[0]>=from && r[0]<=to && (fa==='ALL'||r[1]===fa) && (fb==='ALL'||r[2]===fb));
 }
 function byAgent(rs){
   const m={};
   for(const r of rs){ const ag=r[1], bk=r[2];
     if(!m[ag]) m[ag]={agent:ag, s:new Array(25).fill(0), _b:{}};
-    const o=m[ag];
-    for(let k=3;k<25;k++) o.s[k]+=r[k];
+    const o=m[ag]; for(let k=3;k<25;k++) o.s[k]+=r[k];
     if(!o._b[bk]) o._b[bk]=new Array(25).fill(0);
     for(let k=3;k<25;k++) o._b[bk][k]+=r[k];
+  }
+  return m;
+}
+// open backlog snapshot -> per agent {ct, od, _b}
+function openByAgent(){
+  const fa=fAgentV(), fb=fBucketV(); const m={};
+  for(const [ag,bk,ct,od] of OPEN){
+    if(fa!=='ALL'&&ag!==fa) continue; if(fb!=='ALL'&&bk!==fb) continue;
+    if(!m[ag]) m[ag]={ct:0,od:0};
+    m[ag].ct+=ct; m[ag].od+=od;
   }
   return m;
 }
@@ -154,14 +166,42 @@ function render(){
   document.getElementById('k_bp').textContent=tConn?Math.round(1000*tBook/tConn)/10+'%':'—';
   const from=document.getElementById('from').value, to=document.getElementById('to').value;
   document.getElementById('windowLabel').textContent = from===to?from:(from+'  →  '+to);
-  if(activeTab==='tp') renderTP(m,names);
+  if(activeTab==='funnel') renderFunnel(m);
+  else if(activeTab==='tp') renderTP(m,names);
   else if(activeTab==='util') renderUtil(m,names,ukIdx);
-  else if(activeTab==='over') renderOver(m,names);
   else renderDisp(m,names);
 }
 
+function renderFunnel(m){
+  const openM=openByAgent();
+  const names=[...new Set([...Object.keys(m),...Object.keys(openM)])];
+  const get=(n)=> m[n]?m[n].s:new Array(25).fill(0);
+  const op=(n)=> openM[n]||{ct:0,od:0};
+  names.sort((a,b)=>get(b)[I.booked]-get(a)[I.booked]);
+  let h='<table><thead><tr><th class="agent" rowspan="2">Account Manager</th>'
+   +'<th class="grp-open tot" colspan="3">Tickets open (now)</th>'
+   +'<th class="grp-fill" rowspan="2">Forms filled</th>'
+   +'<th class="grp-call" rowspan="2">Called (connected)</th>'
+   +'<th class="grp-util" rowspan="2">Utilities booked</th></tr>'
+   +'<tr><th class="grp-open">Created today</th><th class="grp-open">Overdue</th><th class="grp-open tot">Total open</th></tr>'
+   +'</thead><tbody>';
+  const T={ct:0,od:0,fl:0,cn:0,bk:0};
+  for(const n of names){ const s=get(n), o=op(n); const filled=s[I.forms]?s[I.calls]:s[I.calls]; const conn=connOf(s);
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
+    h+=cell(o.ct,'grp-open')+cell(o.od,'grp-open')+cell(o.ct+o.od,'tot grp-open');
+    h+=cell(s[I.calls],'grp-fill')+cell(conn,'grp-call')+cell(s[I.booked],'grp-util tot');
+    h+='</tr>';
+    T.ct+=o.ct; T.od+=o.od; T.fl+=s[I.calls]; T.cn+=conn; T.bk+=s[I.booked];
+  }
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+T.ct.toLocaleString()+'</td><td>'+T.od.toLocaleString()+'</td><td>'+(T.ct+T.od).toLocaleString()+'</td>'
+    +'<td>'+T.fl.toLocaleString()+'</td><td>'+T.cn.toLocaleString()+'</td><td>'+T.bk.toLocaleString()+'</td></tr>';
+  h+='</tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='<b>Tickets open (now)</b> = reach-out forms still pending, as of the last refresh — split into <b>Created today</b> and <b>Overdue</b> (carried over from earlier days). <b>Forms filled</b> = reach-outs submitted in the selected window (calls done). <b>Called (connected)</b> = of those, the member was reached (excludes DNP / Ignored / No-outcome). <b>Utilities booked</b> = services the member availed (per #7590). Tickets-open is a live snapshot; the other three follow the date filter.';
+}
+
 function renderTP(m,names){
-  const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
+  const bks=activeBuckets(); const fb=fBucketV(); const showB=fb==='ALL'?bks:[fb];
   const ordered=names.sort((a,b)=>m[b].s[I.booked]-m[a].s[I.booked]);
   let h='<table><thead><tr><th class="agent" rowspan="2">Account Manager</th>'
    +'<th class="grp-acct tot" colspan="'+(showB.length+1)+'">Accounts Assigned</th>'
@@ -183,7 +223,7 @@ function renderTP(m,names){
   h+='<td>'+Tu.t.toLocaleString()+'</td>'; for(const b of showB)h+='<td>'+Tu.b[b].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
   document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Accounts assigned and utilities booked (a service the member availed on/after the reach-out, per #7590) split by touchpoint. Total = sum of the touchpoint columns.';
+  document.getElementById('legend').innerHTML='Accounts assigned and utilities booked (service availed, per #7590) split by touchpoint, for the selected window. Total = sum of touchpoint columns.';
 }
 
 function renderUtil(m,names,ukIdx){
@@ -202,27 +242,7 @@ function renderUtil(m,names,ukIdx){
   for(const[k]of UTILS)h+='<td>'+T[k].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
   document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Utilities booked split by service type. Total booked = distinct accounts that availed any service; a single account can book more than one type, so the type columns may sum to more than the total.';
-}
-
-function renderOver(m,names){
-  const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
-  const ordered=names.sort((a,b)=>m[b].s[I.pending]-m[a].s[I.pending]);
-  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-over tot">Total overdue</th><th class="tot">Assigned</th><th class="tot">Done</th><th class="tot">% done</th>';
-  for(const b of showB)h+='<th class="grp-over">'+b+'</th>';
-  h+='</tr></thead><tbody>';
-  const T={o:0,a:0,d:0,b:{}}; for(const b of showB)T.b[b]=0;
-  for(const n of ordered){ const s=m[n].s; const done=s[I.forms]-s[I.pending]; const pct=s[I.forms]?Math.round(1000*done/s[I.forms])/10:0;
-    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
-    h+=cell(s[I.pending],'tot grp-over')+cell(s[I.forms],'tot')+cell(done,'tot')+'<td class="tot">'+pct+'%</td>';
-    for(const b of showB){ const v=m[n]._b[b]?m[n]._b[b][I.pending]:0; h+=cell(v); T.b[b]+=v; }
-    h+='</tr>'; T.o+=s[I.pending]; T.a+=s[I.forms]; T.d+=done;
-  }
-  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+T.o.toLocaleString()+'</td><td>'+T.a.toLocaleString()+'</td><td>'+T.d.toLocaleString()+'</td><td>'+(T.a?Math.round(1000*T.d/T.a)/10:0)+'%</td>';
-  for(const b of showB)h+='<td>'+T.b[b].toLocaleString()+'</td>';
-  h+='</tr></tbody></table>';
-  document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Overdue = reach-out forms still pending (not completed). Done = assigned − overdue. By assignment date, split by touchpoint.';
+  document.getElementById('legend').innerHTML='Utilities booked split by service type (window). Total booked = distinct accounts that availed any service; one account can book multiple types, so type columns may exceed the total.';
 }
 
 function renderDisp(m,names){
@@ -239,7 +259,7 @@ function renderDisp(m,names){
   for(const[k]of DISP)h+='<td>'+T[k].toLocaleString()+'</td>';
   h+='</tr></tbody></table>';
   document.getElementById('table').innerHTML=h;
-  document.getElementById('legend').innerHTML='Call dispositions (form outcome), by call date. Connected = member was reached = Interested + Rescheduled + DND + Wait&Watch + Lang. Barrier + Open (excludes DNP, Ignored, No-outcome).';
+  document.getElementById('legend').innerHTML='Call dispositions (form outcome), by call date. Connected = member reached = Interested + Rescheduled + DND + Wait&Watch + Lang. Barrier + Open.';
 }
 
 ['fAgent','fBucket','fUtil','from','to'].forEach(id=>document.getElementById(id).addEventListener('change',render));
@@ -250,9 +270,9 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 
 fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
-  RAW=j.rows||j; META=j.meta||{};
+  RAW=j.rows||j; META=j.meta||{}; OPEN=META.open||[];
   document.getElementById('refreshedAt').textContent = META.refreshed_at || '—';
-  buildFilters(); setPreset('mtd'); render();
+  buildFilters(); setPreset('today'); render();
 }).catch(e=>{ document.getElementById('status').innerHTML='<span id="err">Could not load data.json: '+e+'</span>'; });
 </script>
 </body>
