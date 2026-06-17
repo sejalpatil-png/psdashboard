@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Account Management — Agent Dashboard</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#f6f7f9; color:#1c2128;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-size:13px; }
+  .wrap { padding:18px 20px 50px; max-width:1600px; margin:0 auto; }
+  h1 { font-size:20px; margin:0 0 2px; }
+  .sub { color:#6b7280; font-size:12px; margin-bottom:14px; }
+  .sub b { color:#374151; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
+    background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; margin-bottom:14px; }
+  .ctrl { display:flex; flex-direction:column; gap:3px; }
+  .ctrl label { font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:#6b7280; font-weight:600; }
+  .ctrl input[type=date], .ctrl select { padding:6px 8px; border:1px solid #d1d5db; border-radius:7px; font-size:13px; background:#fff; min-width:120px; }
+  .presets { display:flex; gap:6px; }
+  .btn { padding:6px 11px; border:1px solid #d1d5db; background:#fff; border-radius:7px; cursor:pointer; font-size:12px; color:#374151; }
+  .btn:hover { background:#f3f4f6; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px; }
+  .kpi { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:13px 15px; }
+  .kpi .v { font-size:25px; font-weight:700; line-height:1.1; }
+  .kpi .l { color:#6b7280; font-size:11.5px; margin-top:3px; }
+  .kpi.book .v { color:#15803d; }
+  .kpi.over .v { color:#b45309; }
+  .tabs { display:flex; gap:4px; margin-bottom:12px; border-bottom:1px solid #e5e7eb; flex-wrap:wrap; }
+  .tab { padding:8px 14px; cursor:pointer; font-size:13px; color:#6b7280; border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .tab.active { color:#1d4ed8; border-bottom-color:#1d4ed8; font-weight:600; }
+  .panel { background:#fff; border:1px solid #e5e7eb; border-radius:10px; overflow:auto; }
+  table { border-collapse:separate; border-spacing:0; width:100%; font-size:12px; }
+  th, td { padding:7px 9px; text-align:center; white-space:nowrap; border-bottom:1px solid #f0f1f3; }
+  th { background:#f4f5f7; font-weight:600; color:#374151; position:sticky; top:0; z-index:2; }
+  th.agent, td.agent { text-align:left; position:sticky; left:0; min-width:170px; font-weight:700; color:#0b1220; background:#fff; box-shadow:1px 0 0 #e5e7eb; }
+  th.agent { z-index:5; background:#eef0f3; }
+  td.agent { z-index:3; }
+  tbody tr:hover td { background:#fbfcfe; }
+  tbody tr:hover td.agent { background:#f1f5ff; }
+  td.tot, th.tot { font-weight:700; background:#f0f4fb; }
+  tr.total-row td { font-weight:800; background:#eef2ff; border-top:2px solid #c7d2fe; }
+  tr.total-row td.agent { background:#e7edff; }
+  .grp-acct { background:#fce7d3 !important; color:#7c3a00; }
+  .grp-util { background:#fef0d3 !important; color:#7a5200; }
+  .grp-over { background:#fcdedd !important; color:#9b1c1c; }
+  .grp-disp { background:#e0e7ff !important; color:#3730a3; }
+  .muted { color:#c2c7d0; }
+  .sel-util { outline:2px solid #f59e0b; outline-offset:-2px; }
+  .legend { font-size:11px; color:#6b7280; margin-top:10px; line-height:1.5; }
+  #status { font-size:12px; color:#6b7280; margin:8px 2px; min-height:15px; }
+  #err { color:#b91c1c; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Account Management — Agent Dashboard</h1>
+  <div class="sub">Pulse reach-out forms · Metabase DB13. Utilities booked drive monthly incentives. Window: <b id="windowLabel">—</b> · Data refreshed: <b id="refreshedAt">—</b></div>
+
+  <div class="controls">
+    <div class="ctrl"><label>From</label><input type="date" id="from" /></div>
+    <div class="ctrl"><label>To</label><input type="date" id="to" /></div>
+    <div class="ctrl"><label>Quick range</label>
+      <div class="presets">
+        <button class="btn" data-preset="mtd">MTD</button>
+        <button class="btn" data-preset="today">Latest day</button>
+        <button class="btn" data-preset="yest">Prev day</button>
+        <button class="btn" data-preset="7d">Last 7d</button>
+      </div>
+    </div>
+    <div class="ctrl"><label>Agent</label><select id="fAgent"><option value="ALL">All agents</option></select></div>
+    <div class="ctrl"><label>Touchpoint</label><select id="fBucket"><option value="ALL">All touchpoints</option></select></div>
+    <div class="ctrl"><label>Utility</label><select id="fUtil"><option value="ALL">All utilities</option></select></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v" id="k_acct">—</div><div class="l">Accounts assigned</div></div>
+    <div class="kpi book"><div class="v" id="k_book">—</div><div class="l" id="k_book_l">Utilities booked</div></div>
+    <div class="kpi"><div class="v" id="k_conv">—</div><div class="l">Booked ÷ assigned</div></div>
+    <div class="kpi over"><div class="v" id="k_over">—</div><div class="l">Pending / overdue forms</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="util">Utilities by type</div>
+    <div class="tab" data-tab="tp">Touchpoints</div>
+    <div class="tab" data-tab="over">Overdues</div>
+    <div class="tab" data-tab="disp">Call dispositions</div>
+  </div>
+
+  <div id="status"></div>
+  <div class="panel"><div id="table"></div></div>
+  <div class="legend" id="legend"></div>
+</div>
+
+<script>
+// Row schema: [date,agent,bucket, forms_assigned,accts_assigned,pending,submitted,in_call,
+//   u_tele,u_scan,u_tests,u_visit,u_opd,u_ipd,u_other,u_any,
+//   disp_int,disp_dnp,disp_resch,disp_dnd,disp_ign,disp_ww,disp_lang,disp_open,disp_none]
+const I = {date:0,agent:1,bucket:2,forms:3,accts:4,pending:5,submitted:6,incall:7,
+  u_tele:8,u_scan:9,u_tests:10,u_visit:11,u_opd:12,u_ipd:13,u_other:14,u_any:15,
+  d_int:16,d_dnp:17,d_resch:18,d_dnd:19,d_ign:20,d_ww:21,d_lang:22,d_open:23,d_none:24};
+const BUCKETS = ['Day 15','Day 75','Day 150','Day 210','Day 270','OPD Reimbursement','Bad CSAT','Engagement (Inactive)'];
+const UTILS = [[8,'Teleconsult'],[9,'Scanner / HCU'],[10,'Tests (home)'],[11,'Clinic / Network visit'],[12,'OPD reimburse'],[13,'IPD reimburse'],[14,'Other reimburse']];
+const DISP = [[16,'Interested'],[17,'DNP'],[18,'Rescheduled'],[19,'DND'],[20,'Ignored'],[21,'Wait & Watch'],[22,'Lang. Barrier'],[23,'Open'],[24,'No outcome']];
+let RAW=[], META={}, activeTab='util';
+
+function pretty(e){ return e.split(/[._]/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
+function setPreset(p){
+  const dates = [...new Set(RAW.map(r=>r[0]))].sort();
+  if(!dates.length) return;
+  const min=dates[0], max=dates[dates.length-1];
+  let f,t;
+  if(p==='mtd'){ f=min; t=max; }
+  else if(p==='today'){ f=max; t=max; }
+  else if(p==='yest'){ const i=Math.max(0,dates.length-2); f=dates[i]; t=dates[i]; }
+  else { const i=Math.max(0,dates.length-7); f=dates[i]; t=max; }
+  document.getElementById('from').value=f; document.getElementById('to').value=t;
+}
+function activeBuckets(){ return BUCKETS.filter(b=>RAW.some(r=>r[2]===b)); }
+function allAgents(){ return [...new Set(RAW.map(r=>r[1]))].sort(); }
+
+function buildFilters(){
+  const ag=document.getElementById('fAgent'), bk=document.getElementById('fBucket'), ut=document.getElementById('fUtil');
+  ag.innerHTML='<option value="ALL">All agents</option>'+allAgents().map(a=>`<option value="${a}">${pretty(a)}</option>`).join('');
+  bk.innerHTML='<option value="ALL">All touchpoints</option>'+activeBuckets().map(b=>`<option value="${b}">${b}</option>`).join('');
+  ut.innerHTML='<option value="ALL">All utilities</option>'+UTILS.map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
+}
+function rows(){
+  const fa=document.getElementById('fAgent').value, fb=document.getElementById('fBucket').value;
+  const from=document.getElementById('from').value, to=document.getElementById('to').value;
+  return RAW.filter(r=> r[0]>=from && r[0]<=to && (fa==='ALL'||r[1]===fa) && (fb==='ALL'||r[2]===fb));
+}
+function utilTotalRow(r){ return UTILS.reduce((s,[k])=>s+(r[k]||0),0); }
+
+// aggregate filtered rows into per-agent {sum metrics, _b:{bucket:summed metrics}}
+function byAgent(rs){
+  const m={};
+  for(const r of rs){
+    const ag=r[1], bk=r[2];
+    if(!m[ag]) m[ag]={agent:ag, s:new Array(25).fill(0), _b:{}};
+    const o=m[ag];
+    for(let k=3;k<25;k++) o.s[k]+=r[k];
+    if(!o._b[bk]) o._b[bk]=new Array(25).fill(0);
+    for(let k=3;k<25;k++) o._b[bk][k]+=r[k];
+  }
+  return m;
+}
+function cell(v,cls){ return '<td class="'+(cls||'')+'">'+(v?v.toLocaleString():'<span class="muted">0</span>')+'</td>'; }
+
+function render(){
+  if(!RAW.length) return;
+  const rs=rows(); const m=byAgent(rs); const names=Object.keys(m);
+  const fu=document.getElementById('fUtil').value;
+  const ukIdx = fu==='ALL'? null : parseInt(fu,10);
+  let tAcct=0,tOver=0,tBook=0;
+  for(const n of names){ const s=m[n].s; tAcct+=s[I.accts]; tOver+=s[I.pending]; tBook+=(ukIdx===null?UTILS.reduce((x,[k])=>x+s[k],0):s[ukIdx]); }
+  document.getElementById('k_acct').textContent=tAcct.toLocaleString();
+  document.getElementById('k_book').textContent=tBook.toLocaleString();
+  document.getElementById('k_over').textContent=tOver.toLocaleString();
+  document.getElementById('k_conv').textContent=tAcct?Math.round(1000*tBook/tAcct)/10+'%':'—';
+  document.getElementById('k_book_l').textContent='Utilities booked'+(ukIdx===null?'':' — '+UTILS.find(u=>u[0]===ukIdx)[1]);
+  const from=document.getElementById('from').value, to=document.getElementById('to').value;
+  document.getElementById('windowLabel').textContent = from===to?from:(from+'  →  '+to);
+
+  if(activeTab==='util') renderUtil(m,names,ukIdx);
+  else if(activeTab==='tp') renderTP(m,names,ukIdx);
+  else if(activeTab==='over') renderOver(m,names);
+  else renderDisp(m,names);
+}
+
+function renderUtil(m,names,ukIdx){
+  const ordered=names.sort((a,b)=>UTILS.reduce((x,[k])=>x+m[b].s[k],0)-UTILS.reduce((x,[k])=>x+m[a].s[k],0));
+  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-util tot">Total utilities</th>';
+  for(const [k,l] of UTILS) h+='<th class="grp-util'+(ukIdx===k?' sel-util':'')+'">'+l+'</th>';
+  h+='</tr></thead><tbody>';
+  const T={}; for(const[k]of UTILS)T[k]=0; let Tt=0;
+  for(const n of ordered){ const s=m[n].s; const rowTot=UTILS.reduce((x,[k])=>x+s[k],0);
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
+    h+=cell(rowTot,'tot grp-util'); Tt+=rowTot;
+    for(const [k] of UTILS){ h+=cell(s[k],ukIdx===k?'sel-util':''); T[k]+=s[k]; }
+    h+='</tr>';
+  }
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Tt.toLocaleString()+'</td>';
+  for(const[k]of UTILS)h+='<td>'+T[k].toLocaleString()+'</td>';
+  h+='</tr></tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Each utility column = distinct accounts that booked/availed that service on or after their reach-out form date (medicines excluded). Total = sum across types (one account can book several). Scanner/HCU = Even Scanner health checkup; Teleconsult = in-house consults; Tests = home sample collection; Visit = clinic/network OPD visits.';
+}
+
+function renderTP(m,names,ukIdx){
+  const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
+  const metric=(arr)=> ukIdx===null?UTILS.reduce((x,[k])=>x+arr[k],0):(arr[ukIdx]||0);
+  const ordered=names.sort((a,b)=>metric(m[b].s)-metric(m[a].s));
+  let h='<table><thead><tr><th class="agent" rowspan="2">Account Manager</th>'
+   +'<th class="grp-acct tot" colspan="'+(showB.length+1)+'">Accounts Assigned</th>'
+   +'<th class="grp-util tot" colspan="'+(showB.length+1)+'">Utilities Booked'+(ukIdx===null?'':' ('+UTILS.find(u=>u[0]===ukIdx)[1]+')')+'</th></tr><tr>';
+  h+='<th class="grp-acct tot">Total</th>'; for(const b of showB)h+='<th class="grp-acct">'+b+'</th>';
+  h+='<th class="grp-util tot">Total</th>'; for(const b of showB)h+='<th class="grp-util">'+b+'</th>';
+  h+='</tr></thead><tbody>';
+  const Ta={t:0,b:{}},Tu={t:0,b:{}}; for(const b of showB){Ta.b[b]=0;Tu.b[b]=0;}
+  for(const n of ordered){ const o=m[n];
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
+    h+=cell(o.s[I.accts],'tot'); Ta.t+=o.s[I.accts];
+    for(const b of showB){ const v=o._b[b]?o._b[b][I.accts]:0; h+=cell(v); Ta.b[b]+=v; }
+    h+=cell(metric(o.s),'tot'); Tu.t+=metric(o.s);
+    for(const b of showB){ const v=o._b[b]?metric(o._b[b]):0; h+=cell(v); Tu.b[b]+=v; }
+    h+='</tr>';
+  }
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Ta.t.toLocaleString()+'</td>';
+  for(const b of showB)h+='<td>'+Ta.b[b].toLocaleString()+'</td>';
+  h+='<td>'+Tu.t.toLocaleString()+'</td>'; for(const b of showB)h+='<td>'+Tu.b[b].toLocaleString()+'</td>';
+  h+='</tr></tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Accounts assigned & utilities booked split by touchpoint. Total = sum of the touchpoint columns (each touchpoint is its own assignment). Utilities = '+(ukIdx===null?'all types':UTILS.find(u=>u[0]===ukIdx)[1])+'.';
+}
+
+function renderOver(m,names){
+  const bks=activeBuckets(); const fb=document.getElementById('fBucket').value; const showB=fb==='ALL'?bks:[fb];
+  const ordered=names.sort((a,b)=>m[b].s[I.pending]-m[a].s[I.pending]);
+  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="grp-over tot">Total overdue</th><th class="tot">Assigned</th><th class="tot">Submitted</th><th class="tot">% done</th>';
+  for(const b of showB)h+='<th class="grp-over">'+b+'</th>';
+  h+='</tr></thead><tbody>';
+  const T={o:0,a:0,s:0,b:{}}; for(const b of showB)T.b[b]=0;
+  for(const n of ordered){ const o=m[n].s; const done=o[I.forms]?Math.round(1000*o[I.submitted]/o[I.forms])/10:0;
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>';
+    h+=cell(o[I.pending],'tot grp-over')+cell(o[I.forms],'tot')+cell(o[I.submitted],'tot')+'<td class="tot">'+done+'%</td>';
+    for(const b of showB){ const v=m[n]._b[b]?m[n]._b[b][I.pending]:0; h+=cell(v); T.b[b]+=v; }
+    h+='</tr>'; T.o+=o[I.pending]; T.a+=o[I.forms]; T.s+=o[I.submitted];
+  }
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+T.o.toLocaleString()+'</td><td>'+T.a.toLocaleString()+'</td><td>'+T.s.toLocaleString()+'</td><td>'+(T.a?Math.round(1000*T.s/T.a)/10:0)+'%</td>';
+  for(const b of showB)h+='<td>'+T.b[b].toLocaleString()+'</td>';
+  h+='</tr></tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Overdue = reach-out forms still in draft (call not completed). % done = submitted ÷ assigned forms. Split by touchpoint.';
+}
+
+function renderDisp(m,names){
+  const ordered=names.sort((a,b)=>m[b].s[16]-m[a].s[16]);
+  let h='<table><thead><tr><th class="agent">Account Manager</th><th class="tot grp-disp">Calls logged</th>';
+  for(const[k,l]of DISP)h+='<th class="grp-disp">'+l+'</th>';
+  h+='</tr></thead><tbody>';
+  const T={}; for(const[k]of DISP)T[k]=0; let Tc=0;
+  for(const n of ordered){ const s=m[n].s; let logged=0; for(const[k]of DISP){if(k!==24)logged+=s[k];}
+    h+='<tr><td class="agent" title="'+n+'@even.in">'+pretty(n)+'</td>'+cell(logged,'tot grp-disp');
+    for(const[k]of DISP){ h+=cell(s[k]); T[k]+=s[k]; } h+='</tr>'; Tc+=logged;
+  }
+  h+='<tr class="total-row"><td class="agent">ALL</td><td>'+Tc.toLocaleString()+'</td>';
+  for(const[k]of DISP)h+='<td>'+T[k].toLocaleString()+'</td>';
+  h+='</tr></tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='Call dispositions (form outcome). Calls logged excludes "No outcome". Respects agent &amp; touchpoint filters.';
+}
+
+['fAgent','fBucket','fUtil','from','to'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+document.querySelectorAll('.presets .btn').forEach(b=>b.addEventListener('click',()=>{ setPreset(b.dataset.preset); render(); }));
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); activeTab=t.dataset.tab; render();
+}));
+
+fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
+  RAW=j.rows||j; META=j.meta||{};
+  document.getElementById('refreshedAt').textContent = META.refreshed_at || '—';
+  buildFilters(); setPreset('mtd'); render();
+}).catch(e=>{ document.getElementById('status').innerHTML='<span id="err">Could not load data.json: '+e+'</span>'; });
+</script>
+</body>
+</html>
