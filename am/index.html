@@ -113,7 +113,7 @@ function connOf(s){ return CONN.reduce((x,k)=>x+s[k],0); }
 function setPreset(p){
   const dates=[...new Set(RAW.map(r=>r[0]))].sort(); if(!dates.length) return;
   const min=dates[0], max=dates[dates.length-1]; let f,t;
-  if(p==='mtd'){ f=min; t=max; } else if(p==='today'){ f=max; t=max; }
+  if(p==='mtd'){ f=max.slice(0,8)+'01'; t=max; } else if(p==='today'){ f=max; t=max; }
   else if(p==='yest'){ const i=Math.max(0,dates.length-2); f=dates[i]; t=dates[i]; }
   else { const i=Math.max(0,dates.length-7); f=dates[i]; t=max; }
   document.getElementById('from').value=f; document.getElementById('to').value=t;
