@@ -35,4 +35,4 @@ SELECT channel,year cycle,COUNT(*) total,COUNT(*) FILTER (WHERE is_renewed) rene
 -- ===== raw/watchlist.json =====
 SELECT r.channel,CASE WHEN COALESCE(r.renewal_deal_owner,'')='' THEN 'Unassigned' ELSE r.renewal_deal_owner END owner,r.account_uid,r.year cycle,(CURRENT_DATE-r.current_policy_end::date) days_overdue,ROUND(COALESCE(r.current_policy_amount,0)::numeric) old_premium,NULLIF(r.reason_for_not_renewing,'') reason
 FROM public.dpipe_retention r WHERE r.year BETWEEN 1 AND 4 AND r.channel IN ('ONLINE','CLINIC','OFFLINE') AND NOT r.is_renewed AND (r.current_policy_end::date-CURRENT_DATE)<-30
-ORDER BY old_premium DESC LIMIT 250;
+ORDER BY old_premium DESC LIMIT 80;
