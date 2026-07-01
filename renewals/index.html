@@ -1,0 +1,130 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renewals Dashboard — Even Health</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222b;--line:#2a2f3a;--text:#e8eaed;--muted:#9aa3b2;--accent:#6ea8fe;--good:#3fb950;--warn:#d29922;--bad:#f85149;--grace:#e0894f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:clamp(11px,0.92vw,16px)/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{padding:9px 18px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:var(--panel)}
+h1{font-size:1.45em;margin:0;font-weight:650}
+.sub{color:var(--muted);font-size:0.82em;margin-top:3px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+label{font-size:0.85em;color:var(--muted);margin-right:6px}
+select{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:0.9em}
+.wrap{padding:10px 16px 24px;max-width:1400px}
+h2{font-size:1.05em;margin:18px 2px 8px;font-weight:600}
+h2 .m{color:var(--muted);font-weight:400;font-size:0.82em;margin-left:8px}
+.cards{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:120px;flex:1}
+.card .k{color:var(--muted);font-size:0.72em;text-transform:uppercase;letter-spacing:.04em}
+.card .v{font-size:1.55em;font-weight:650;margin-top:4px}
+.card .s{color:var(--muted);font-size:0.74em;margin-top:2px}
+.card.good{border-left:3px solid var(--good)}.card.warn{border-left:3px solid var(--warn)}
+.card.grace{border-left:3px solid var(--grace)}.card.bad{border-left:3px solid var(--bad)}.card.acc{border-left:3px solid var(--accent)}
+table{border-collapse:collapse;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:4px}
+th,td{padding:5px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+th{position:sticky;top:0;background:var(--panel2);font-size:0.76em;text-transform:uppercase;letter-spacing:.02em;color:var(--muted);cursor:pointer;user-select:none}
+th:hover{color:var(--text)}
+tbody tr:hover{background:#1b1f29}
+td.dim{color:var(--muted)}
+.pill{display:inline-block;padding:1px 7px;border-radius:9px;font-size:0.82em;font-weight:600}
+.g{color:var(--good)}.w{color:var(--warn)}.b{color:var(--bad)}.o{color:var(--grace)}
+.bar{height:6px;border-radius:4px;background:var(--panel2);overflow:hidden;min-width:60px;display:inline-block;vertical-align:middle;width:70px}
+.bar>i{display:block;height:100%;background:var(--good)}
+.note{color:var(--muted);font-size:0.82em;margin:10px 2px}
+.scroll{max-height:460px;overflow:auto;border-radius:10px}
+footer{color:var(--muted);font-size:0.8em;padding:6px 16px 20px;line-height:1.6;max-width:1400px}
+.tag{font-size:0.72em;padding:1px 6px;border-radius:6px;background:var(--panel2);color:var(--muted);margin-left:6px}
+</style></head><body>
+<header><div>
+<h1>Renewals Dashboard <span class="tag">Even Health</span></h1>
+<div class="sub" id="sub">loading…</div>
+</div>
+<div class="controls">
+<span><label>Channel</label><select id="chanSel"></select></span>
+</div></header>
+<div class="wrap">
+  <h2>Pipeline <span class="m">by renewal status (T = policy end date · window T-15 → T+30)</span></h2>
+  <div class="cards" id="funnel"></div>
+
+  <h2>Deal-owner leaderboard <span class="m">current book · sorted by renewal %</span></h2>
+  <div class="scroll"><table id="lbTbl"><thead><tr id="lbHead"></tr></thead><tbody id="lbBody"></tbody></table></div>
+
+  <h2>Cycle-wise retention <span class="m">Cycle N = policy year N</span></h2>
+  <table id="cyTbl"><thead><tr id="cyHead"></tr></thead><tbody id="cyBody"></tbody></table>
+
+  <h2>Overdue watchlist <span class="m">past T+30, not renewed · top by ₹ old premium · identifiers masked</span></h2>
+  <div class="scroll"><table id="wlTbl"><thead><tr id="wlHead"></tr></thead><tbody id="wlBody"></tbody></table></div>
+</div>
+<footer>
+<b>Windows</b> (T = policy end): <b>Outreach</b> T-15→T · <b>Grace</b> T→T+30 (still renewable) · <b>Overdue</b> past T+30, not renewed (crossed the 45-day chase window).
+<b>Renewal %</b> = renewed accounts ÷ owner's total book (cycles 1-4). <b>₹ at risk</b> = old premium of that owner's overdue accounts. <b>Rev retention %</b> = renewed amount ÷ old premium.
+Overdue reasons are only shown once an account is past T+30. Customer names/mobiles are intentionally omitted from this public page — use the Metabase RAW view for identified detail.
+</footer>
+<script>
+let D=null;const F=n=>n==null?'-':n>=1e7?'₹'+(n/1e7).toFixed(2)+'Cr':n>=1e5?'₹'+(n/1e5).toFixed(1)+'L':n>=1e3?'₹'+(n/1e3).toFixed(0)+'k':'₹'+n;
+const N=n=>n==null?'-':n.toLocaleString('en-IN');
+const chanSel=document.getElementById('chanSel');
+function pctClass(p){return p>=50?'g':p>=30?'w':'b';}
+function ch(){return chanSel.value;}
+
+function renderFunnel(){
+  const f=D.funnel[ch()];
+  const inwin=f.outreach+f.grace_early+f.grace_late;
+  const cards=[
+    ['acc','Total book',N(f.total),'cycles 1-4'],
+    ['good','Renewed',N(f.renewed),F(f.rupees_renewed)+' collected'],
+    ['warn','Outreach (T-15→T)',N(f.outreach),'pre-expiry'],
+    ['grace','In grace (T→T+30)',N(f.grace_early+f.grace_late),F(f.rupees_in_window)+' savable'],
+    ['bad','Overdue (past T+30)',N(f.overdue),F(f.rupees_overdue)+' at risk'],
+    ['acc','Not in window',N(f.not_in_window),'&gt;15d to expiry'],
+  ];
+  document.getElementById('funnel').innerHTML=cards.map(c=>`<div class="card ${c[0]}"><div class="k">${c[1]}</div><div class="v">${c[2]}</div><div class="s">${c[3]}</div></div>`).join('');
+}
+
+let lbSort={k:'renewal_pct',dir:-1};
+const LBC=[['owner','Owner','l'],['total_accts','Book'],['renewed','Renewed'],['renewal_pct','Renewal %'],['outreach','Outreach'],['grace','Grace'],['overdue','Overdue'],['rupees_renewed','₹ Renewed'],['rupees_overdue','₹ At risk']];
+function renderLB(){
+  document.getElementById('lbHead').innerHTML=LBC.map(c=>`<th class="${c[2]||''}" data-k="${c[0]}">${c[1]}</th>`).join('');
+  let rows=[...D.leaderboard[ch()]];
+  rows.sort((a,b)=>{const x=a[lbSort.k],y=b[lbSort.k];return (typeof x==='string'?x.localeCompare(y):x-y)*lbSort.dir;});
+  const maxp=100;
+  document.getElementById('lbBody').innerHTML=rows.map(r=>`<tr>
+    <td class="l">${r.owner}</td><td>${N(r.total_accts)}</td><td>${N(r.renewed)}</td>
+    <td><span class="pill ${pctClass(r.renewal_pct)}">${r.renewal_pct}%</span> <span class="bar"><i style="width:${Math.min(100,r.renewal_pct)}%;background:var(--${r.renewal_pct>=50?'good':r.renewal_pct>=30?'warn':'bad'})"></i></span></td>
+    <td>${r.outreach||'-'}</td><td class="o">${r.grace||'-'}</td><td class="b">${N(r.overdue)}</td>
+    <td>${F(r.rupees_renewed)}</td><td class="dim">${F(r.rupees_overdue)}</td></tr>`).join('');
+  document.querySelectorAll('#lbHead th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;lbSort.dir=lbSort.k===k?-lbSort.dir:-1;lbSort.k=k;renderLB();});
+}
+
+const CYC=[['cycle','Cycle','l'],['total','Accounts'],['renewed','Renewed'],['acct_ret_pct','Acct ret %'],['old_premium','Old premium'],['renewed_amt','Renewed ₹'],['rev_ret_pct','Rev ret %']];
+function renderCY(){
+  document.getElementById('cyHead').innerHTML=CYC.map(c=>`<th class="${c[2]||''}">${c[1]}</th>`).join('');
+  document.getElementById('cyBody').innerHTML=D.cycle[ch()].map(r=>`<tr>
+    <td class="l">Cycle ${r.cycle}</td><td>${N(r.total)}</td><td>${N(r.renewed)}</td>
+    <td><span class="pill ${pctClass(r.acct_ret_pct)}">${r.acct_ret_pct}%</span></td>
+    <td>${F(r.old_premium)}</td><td>${F(r.renewed_amt)}</td>
+    <td><span class="pill ${pctClass(r.rev_ret_pct)}">${r.rev_ret_pct}%</span></td></tr>`).join('');
+}
+
+const WLC=[['account_uid','Account','l'],['owner','Owner','l'],['channel','Ch','l'],['cycle','Cyc'],['days_overdue','Days overdue'],['old_premium','₹ Old premium'],['reason','Reason','l']];
+function mask(u){return u?u.slice(0,4)+'…'+u.slice(-3):'-';}
+function renderWL(){
+  document.getElementById('wlHead').innerHTML=WLC.map(c=>`<th class="${c[2]||''}">${c[1]}</th>`).join('');
+  document.getElementById('wlBody').innerHTML=D.watchlist[ch()].slice(0,200).map(r=>`<tr>
+    <td class="l dim">${mask(r.account_uid)}</td><td class="l">${r.owner}</td><td class="l dim">${r.channel}</td>
+    <td>${r.cycle}</td><td class="b">${N(r.days_overdue)}</td><td>${F(r.old_premium)}</td>
+    <td class="l dim">${r.reason||'—'}</td></tr>`).join('');
+}
+
+function renderAll(){renderFunnel();renderLB();renderCY();renderWL();}
+fetch('data.json?_='+Date.now()).then(r=>r.json()).then(d=>{
+  D=d;
+  chanSel.innerHTML=d.channels.map(c=>`<option value="${c}">${c==='ALL'?'All channels':c}</option>`).join('');
+  chanSel.onchange=renderAll;
+  const f=d.funnel.ALL;
+  document.getElementById('sub').innerHTML=`${N(f.total)} accounts · cycles 1-4 · all channels · <b class="b">${N(f.overdue)} overdue</b> · generated ${d.generated}`;
+  renderAll();
+}).catch(e=>{document.getElementById('sub').textContent='failed to load data.json: '+e;});
+</script></body></html>
