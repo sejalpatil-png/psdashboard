@@ -90,6 +90,14 @@
     <div class="tab" data-tab="tp">Touchpoints</div>
     <div class="tab" data-tab="util">Utilities by type</div>
     <div class="tab" data-tab="disp">Call dispositions</div>
+    <div class="tab" data-tab="raw">Raw dump</div>
+  </div>
+
+  <div id="rawbar" style="display:none;margin:10px 0;gap:10px;flex-wrap:wrap;align-items:center;">
+    <input id="rawq" placeholder="Search mobile or member name…" style="padding:6px 10px;font-size:13px;border:1px solid #d1d5db;border-radius:6px;min-width:250px;" />
+    <label style="font-size:12px;color:#6b7280;"><input type="checkbox" id="rawBooked" /> Booked a utility only</label>
+    <span id="rawcount" style="font-size:12px;color:#6b7280;"></span>
+    <button class="btn" id="rawcsv" style="margin-left:auto;">Download CSV</button>
   </div>
 
   <div id="status"></div>
@@ -106,7 +114,11 @@ const BUCKETS = ['Day 15','Day 75','Day 150','Day 210','Day 270','OPD Reimbursem
 const UTILS = [[8,'Teleconsult'],[9,'Scanner / HCU'],[10,'Tests (home)'],[11,'Clinic / Network visit'],[12,'OPD reimburse'],[13,'IPD reimburse'],[14,'Other reimburse']];
 const DISP = [[16,'Interested'],[17,'DNP'],[18,'Rescheduled'],[19,'DND'],[20,'Ignored'],[21,'Wait & Watch'],[22,'Lang. Barrier'],[23,'Open'],[24,'No outcome']];
 const CONN = [16,18,19,21,22,23];   // connected = member reached
+// Raw dump legends (schema: [date_MMDD,agent,mobile,name,bucket,outcome,in_call,util])
+const RAWDISP = ['Interested','DNP','Rescheduled','DND','Ignored','Wait & Watch','Lang. Barrier','Open','No outcome'];
+const RAWUTIL = ['—','Teleconsult','Scanner / HCU','Tests (home)','Clinic / Network visit','OPD reimburse','Other'];
 let RAW=[], OPEN=[], META={}, activeTab='funnel';
+let RAWROWS=null, rawLoaded=false, rawLoading=false;
 
 function pretty(e){ return e.split(/[._]/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
 function connOf(s){ return CONN.reduce((x,k)=>x+s[k],0); }
@@ -169,7 +181,69 @@ function render(){
   if(activeTab==='funnel') renderFunnel(m);
   else if(activeTab==='tp') renderTP(m,names);
   else if(activeTab==='util') renderUtil(m,names,ukIdx);
+  else if(activeTab==='raw') renderRaw();
   else renderDisp(m,names);
+}
+
+// ---- Raw dump (member-level) ----
+function rawFilter(){
+  const from=document.getElementById('from').value, to=document.getElementById('to').value;
+  const fa=fAgentV(), fb=fBucketV();
+  const q=(document.getElementById('rawq').value||'').trim().toLowerCase();
+  const bookedOnly=document.getElementById('rawBooked').checked;
+  return RAWROWS.filter(r=>{
+    const d='2026-'+r[0];
+    if(d<from||d>to) return false;
+    if(fa!=='ALL'&&r[1]!==fa) return false;
+    if(fb!=='ALL'&&BUCKETS[r[4]]!==fb) return false;
+    if(bookedOnly && r[7]===0) return false;
+    if(q){ const hay=((r[2]||'')+' '+(r[3]||'')).toLowerCase(); if(hay.indexOf(q)<0) return false; }
+    return true;
+  });
+}
+function renderRaw(){
+  if(rawLoading){ document.getElementById('table').innerHTML='<div class="muted" style="padding:20px">Loading member-level data…</div>'; return; }
+  if(!rawLoaded || !RAWROWS){ document.getElementById('table').innerHTML='<div class="muted" style="padding:20px">Raw data not available.</div>'; return; }
+  const rs=rawFilter();
+  rs.sort((a,b)=> a[0]<b[0]?1:a[0]>b[0]?-1:(a[1]<b[1]?-1:1)); // date desc, then agent
+  const CAP=3000; const shown=rs.slice(0,CAP);
+  document.getElementById('rawcount').textContent = rs.length.toLocaleString()+' reach-out'+(rs.length===1?'':'s')+(rs.length>CAP?' (showing first '+CAP.toLocaleString()+')':'');
+  let h='<table><thead><tr><th class="agent">Date</th><th class="agent">Account Manager</th><th>Mobile</th><th class="agent">Member</th><th>Touchpoint</th><th>Disposition</th><th>Booked on call</th><th class="grp-util">Utility booked</th></tr></thead><tbody>';
+  for(const r of shown){
+    const util=RAWUTIL[r[7]]||'—';
+    h+='<tr>'
+      +'<td class="muted">2026-'+r[0]+'</td>'
+      +'<td class="agent" title="'+r[1]+'@even.in">'+pretty(r[1])+'</td>'
+      +'<td>'+(r[2]||'<span class="muted">—</span>')+'</td>'
+      +'<td class="agent">'+(r[3]||'<span class="muted">—</span>')+'</td>'
+      +'<td>'+(BUCKETS[r[4]]||'—')+'</td>'
+      +'<td>'+(RAWDISP[r[5]]||'—')+'</td>'
+      +'<td>'+(r[6]?'✓':'<span class="muted">—</span>')+'</td>'
+      +'<td class="grp-util'+(r[7]?' tot':'')+'">'+(r[7]?util:'<span class="muted">—</span>')+'</td>'
+      +'</tr>';
+  }
+  h+='</tbody></table>';
+  document.getElementById('table').innerHTML=h;
+  document.getElementById('legend').innerHTML='One row per reach-out <b>submitted</b> in the window (member-level). Respects the Date, Agent and Touchpoint filters above; use the search box for a specific mobile or member. <b>Booked on call</b> = a utility was booked during the call itself. <b>Utility booked</b> = service the member availed on/after this reach-out (per #7590). Covers the current month.';
+}
+function rawCSV(){
+  if(!RAWROWS) return;
+  const rs=rawFilter();
+  const head=['date','account_manager','mobile','member','touchpoint','disposition','booked_on_call','utility_booked'];
+  const esc=v=>{ v=(v==null?'':String(v)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  const lines=[head.join(',')];
+  for(const r of rs){ lines.push([ '2026-'+r[0], r[1], r[2]||'', r[3]||'', BUCKETS[r[4]]||'', RAWDISP[r[5]]||'', r[6]?'yes':'no', r[7]?(RAWUTIL[r[7]]||''):'' ].map(esc).join(',')); }
+  const blob=new Blob([lines.join('\n')],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='am_raw_'+document.getElementById('from').value+'_to_'+document.getElementById('to').value+'.csv';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function loadRaw(){
+  if(rawLoaded||rawLoading) { renderRaw(); return; }
+  rawLoading=true; renderRaw();
+  fetch('./raw.json?t='+Date.now()).then(r=>r.json()).then(j=>{
+    RAWROWS=j; rawLoaded=true; rawLoading=false; renderRaw();
+  }).catch(e=>{ rawLoading=false; document.getElementById('table').innerHTML='<div id="err" style="padding:16px">Could not load raw.json: '+e+'</div>'; });
 }
 
 function renderFunnel(m){
@@ -266,8 +340,13 @@ function renderDisp(m,names){
 document.querySelectorAll('.presets .btn').forEach(b=>b.addEventListener('click',()=>{ setPreset(b.dataset.preset); render(); }));
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active'); activeTab=t.dataset.tab; render();
+  t.classList.add('active'); activeTab=t.dataset.tab;
+  document.getElementById('rawbar').style.display = activeTab==='raw' ? 'flex' : 'none';
+  if(activeTab==='raw'){ if(!rawLoaded){ loadRaw(); } render(); } else render();
 }));
+document.getElementById('rawq').addEventListener('input', ()=>{ if(activeTab==='raw') renderRaw(); });
+document.getElementById('rawBooked').addEventListener('change', ()=>{ if(activeTab==='raw') renderRaw(); });
+document.getElementById('rawcsv').addEventListener('click', rawCSV);
 
 fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
   RAW=j.rows||j; META=j.meta||{}; OPEN=META.open||[];
