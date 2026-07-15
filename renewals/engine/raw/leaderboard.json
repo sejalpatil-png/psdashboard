@@ -2,7 +2,7 @@
  "0": {
   "channel": "CLINIC",
   "owner": "Unassigned",
-  "total_accts": 2404,
+  "total_accts": 2405,
   "renewed": 5,
   "outreach": 8,
   "grace": 7,
@@ -14,26 +14,26 @@
  "1": {
   "channel": "CLINIC",
   "owner": "Akash W",
-  "total_accts": 1996,
-  "renewed": 401,
+  "total_accts": 1997,
+  "renewed": 402,
   "outreach": 55,
-  "grace": 98,
+  "grace": 97,
   "overdue": 404,
-  "rupees_renewed": 10581108,
+  "rupees_renewed": 10607798,
   "rupees_overdue": 9513716,
-  "rupees_in_window": 3997109
+  "rupees_in_window": 3974032
  },
  "2": {
   "channel": "CLINIC",
   "owner": "Aishwarya",
-  "total_accts": 1666,
-  "renewed": 364,
-  "outreach": 44,
+  "total_accts": 1667,
+  "renewed": 365,
+  "outreach": 43,
   "grace": 80,
   "overdue": 416,
-  "rupees_renewed": 9873470,
+  "rupees_renewed": 9912432,
   "rupees_overdue": 9163870,
-  "rupees_in_window": 3685297
+  "rupees_in_window": 3649198
  },
  "3": {
   "channel": "CLINIC",
@@ -50,14 +50,14 @@
  "4": {
   "channel": "CLINIC",
   "owner": "Akhil Ashokan",
-  "total_accts": 882,
-  "renewed": 161,
+  "total_accts": 883,
+  "renewed": 162,
   "outreach": 38,
-  "grace": 74,
+  "grace": 73,
   "overdue": 47,
-  "rupees_renewed": 4487591,
+  "rupees_renewed": 4525844,
   "rupees_overdue": 1159918,
-  "rupees_in_window": 3299104
+  "rupees_in_window": 3263005
  },
  "5": {
   "channel": "CLINIC",
@@ -194,7 +194,7 @@
  "16": {
   "channel": "ONLINE",
   "owner": "Unassigned",
-  "total_accts": 4375,
+  "total_accts": 4377,
   "renewed": 150,
   "outreach": 4,
   "grace": 8,

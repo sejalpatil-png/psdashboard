@@ -2,17 +2,17 @@
  "0": {
   "channel": "CLINIC",
   "cycle": 1,
-  "total": 7582,
-  "renewed": 1222,
-  "old_premium": 193336216,
-  "renewed_amt": 33201448
+  "total": 7583,
+  "renewed": 1225,
+  "old_premium": 193361412,
+  "renewed_amt": 33305353
  },
  "1": {
   "channel": "CLINIC",
   "cycle": 2,
-  "total": 1247,
+  "total": 1250,
   "renewed": 65,
-  "old_premium": 33913680,
+  "old_premium": 34017585,
   "renewed_amt": 1643713
  },
  "2": {
@@ -66,9 +66,9 @@
  "8": {
   "channel": "ONLINE",
   "cycle": 1,
-  "total": 15909,
+  "total": 15911,
   "renewed": 7083,
-  "old_premium": 276373343,
+  "old_premium": 276386575,
   "renewed_amt": 168528661
  },
  "9": {

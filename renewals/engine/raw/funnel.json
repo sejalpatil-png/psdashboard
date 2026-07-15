@@ -1,16 +1,16 @@
 {
  "0": {
   "channel": "CLINIC",
-  "not_in_window": 5703,
-  "outreach": 202,
-  "grace_early": 185,
+  "not_in_window": 5707,
+  "outreach": 201,
+  "grace_early": 183,
   "grace_late": 170,
   "overdue": 1347,
-  "renewed": 1288,
-  "total": 8895,
-  "rupees_in_window": 15604606,
+  "renewed": 1291,
+  "total": 8899,
+  "rupees_in_window": 15509331,
   "rupees_overdue": 28748502,
-  "rupees_renewed": 34879069
+  "rupees_renewed": 34982974
  },
  "1": {
   "channel": "OFFLINE",
@@ -27,13 +27,13 @@
  },
  "2": {
   "channel": "ONLINE",
-  "not_in_window": 8961,
+  "not_in_window": 8963,
   "outreach": 222,
   "grace_early": 224,
   "grace_late": 119,
   "overdue": 6454,
   "renewed": 13437,
-  "total": 29417,
+  "total": 29419,
   "rupees_in_window": 12946578,
   "rupees_overdue": 88861917,
   "rupees_renewed": 339247979
