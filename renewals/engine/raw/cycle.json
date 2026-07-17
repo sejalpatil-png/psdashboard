@@ -2,17 +2,17 @@
  "0": {
   "channel": "CLINIC",
   "cycle": 1,
-  "total": 7588,
-  "renewed": 1233,
-  "old_premium": 193345073,
-  "renewed_amt": 33491038
+  "total": 7589,
+  "renewed": 1234,
+  "old_premium": 193396718,
+  "renewed_amt": 33532120
  },
  "1": {
   "channel": "CLINIC",
   "cycle": 2,
-  "total": 1258,
+  "total": 1259,
   "renewed": 65,
-  "old_premium": 34203270,
+  "old_premium": 34244352,
   "renewed_amt": 1643713
  },
  "2": {
@@ -35,16 +35,16 @@
   "channel": "OFFLINE",
   "cycle": 1,
   "total": 8033,
-  "renewed": 2116,
+  "renewed": 2119,
   "old_premium": 159921934,
-  "renewed_amt": 46155170
+  "renewed_amt": 46231572
  },
  "5": {
   "channel": "OFFLINE",
   "cycle": 2,
-  "total": 2133,
+  "total": 2136,
   "renewed": 731,
-  "old_premium": 46604173,
+  "old_premium": 46680575,
   "renewed_amt": 17366556
  },
  "6": {
@@ -66,33 +66,33 @@
  "8": {
   "channel": "ONLINE",
   "cycle": 1,
-  "total": 15934,
-  "renewed": 7092,
-  "old_premium": 276779902,
-  "renewed_amt": 168770785
+  "total": 15939,
+  "renewed": 7097,
+  "old_premium": 276917242,
+  "renewed_amt": 168862799
  },
  "9": {
   "channel": "ONLINE",
   "cycle": 2,
-  "total": 7163,
-  "renewed": 4197,
-  "old_premium": 170299825,
-  "renewed_amt": 108506920
+  "total": 7168,
+  "renewed": 4201,
+  "old_premium": 170391839,
+  "renewed_amt": 108571736
  },
  "10": {
   "channel": "ONLINE",
   "cycle": 3,
-  "total": 4229,
-  "renewed": 2117,
-  "old_premium": 109137739,
-  "renewed_amt": 60859354
+  "total": 4233,
+  "renewed": 2121,
+  "old_premium": 109202555,
+  "renewed_amt": 61025164
  },
  "11": {
   "channel": "ONLINE",
   "cycle": 4,
-  "total": 2134,
+  "total": 2138,
   "renewed": 52,
-  "old_premium": 61210027,
+  "old_premium": 61375837,
   "renewed_amt": 1671054
  }
 }

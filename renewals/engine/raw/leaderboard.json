@@ -2,11 +2,11 @@
  "0": {
   "channel": "CLINIC",
   "owner": "Unassigned",
-  "total_accts": 2410,
+  "total_accts": 2411,
   "renewed": 5,
   "outreach": 7,
   "grace": 7,
-  "overdue": 107,
+  "overdue": 106,
   "rupees_renewed": 212491,
   "rupees_overdue": 597575,
   "rupees_in_window": 72074
@@ -14,50 +14,50 @@
  "1": {
   "channel": "CLINIC",
   "owner": "Akash W",
-  "total_accts": 2000,
-  "renewed": 406,
-  "outreach": 12,
-  "grace": 74,
-  "overdue": 377,
-  "rupees_renewed": 10709103,
-  "rupees_overdue": 8630138,
-  "rupees_in_window": 2165947
+  "total_accts": 2001,
+  "renewed": 407,
+  "outreach": 11,
+  "grace": 68,
+  "overdue": 373,
+  "rupees_renewed": 10750185,
+  "rupees_overdue": 8496979,
+  "rupees_in_window": 1993770
  },
  "2": {
   "channel": "CLINIC",
   "owner": "Aishwarya",
   "total_accts": 1667,
   "renewed": 365,
-  "outreach": 17,
-  "grace": 69,
-  "overdue": 394,
+  "outreach": 15,
+  "grace": 66,
+  "overdue": 390,
   "rupees_renewed": 9912432,
-  "rupees_overdue": 8558283,
-  "rupees_in_window": 2432909
+  "rupees_overdue": 8400101,
+  "rupees_in_window": 2262237
  },
  "3": {
   "channel": "CLINIC",
   "owner": "Deepak Shetty",
   "total_accts": 1317,
   "renewed": 198,
-  "outreach": 17,
-  "grace": 82,
-  "overdue": 38,
+  "outreach": 14,
+  "grace": 76,
+  "overdue": 37,
   "rupees_renewed": 5659522,
-  "rupees_overdue": 896251,
-  "rupees_in_window": 2961752
+  "rupees_overdue": 852190,
+  "rupees_in_window": 2674911
  },
  "4": {
   "channel": "CLINIC",
   "owner": "Akhil Ashokan",
   "total_accts": 883,
   "renewed": 162,
-  "outreach": 18,
-  "grace": 66,
+  "outreach": 16,
+  "grace": 63,
   "overdue": 45,
   "rupees_renewed": 4525844,
   "rupees_overdue": 1065604,
-  "rupees_in_window": 2349982
+  "rupees_in_window": 2214009
  },
  "5": {
   "channel": "CLINIC",
@@ -66,46 +66,46 @@
   "renewed": 163,
   "outreach": 0,
   "grace": 0,
-  "overdue": 293,
+  "overdue": 290,
   "rupees_renewed": 4149267,
-  "rupees_overdue": 6442436,
+  "rupees_overdue": 6371409,
   "rupees_in_window": null
  },
  "6": {
   "channel": "OFFLINE",
   "owner": "Neha",
-  "total_accts": 3258,
-  "renewed": 972,
-  "outreach": 22,
-  "grace": 129,
-  "overdue": 1220,
-  "rupees_renewed": 21324870,
-  "rupees_overdue": 21825601,
-  "rupees_in_window": 2401295
+  "total_accts": 3259,
+  "renewed": 973,
+  "outreach": 19,
+  "grace": 124,
+  "overdue": 1205,
+  "rupees_renewed": 21344715,
+  "rupees_overdue": 21611669,
+  "rupees_in_window": 2278611
  },
  "7": {
   "channel": "OFFLINE",
   "owner": "Sharan",
-  "total_accts": 2708,
-  "renewed": 784,
-  "outreach": 18,
-  "grace": 36,
-  "overdue": 1122,
-  "rupees_renewed": 15770641,
-  "rupees_overdue": 18320744,
-  "rupees_in_window": 1125398
+  "total_accts": 2709,
+  "renewed": 785,
+  "outreach": 16,
+  "grace": 37,
+  "overdue": 1110,
+  "rupees_renewed": 15786738,
+  "rupees_overdue": 18148118,
+  "rupees_in_window": 1110840
  },
  "8": {
   "channel": "OFFLINE",
   "owner": "Kushal",
-  "total_accts": 2501,
-  "renewed": 841,
-  "outreach": 24,
-  "grace": 46,
-  "overdue": 856,
-  "rupees_renewed": 21606687,
-  "rupees_overdue": 17692975,
-  "rupees_in_window": 1690742
+  "total_accts": 2502,
+  "renewed": 842,
+  "outreach": 20,
+  "grace": 43,
+  "overdue": 842,
+  "rupees_renewed": 21647147,
+  "rupees_overdue": 17338447,
+  "rupees_in_window": 1507738
  },
  "9": {
   "channel": "OFFLINE",
@@ -114,9 +114,9 @@
   "renewed": 238,
   "outreach": 0,
   "grace": 0,
-  "overdue": 938,
+  "overdue": 926,
   "rupees_renewed": 4814261,
-  "rupees_overdue": 20753492,
+  "rupees_overdue": 20411117,
   "rupees_in_window": null
  },
  "10": {
@@ -124,11 +124,11 @@
   "owner": "Unassigned",
   "total_accts": 939,
   "renewed": 1,
-  "outreach": 5,
+  "outreach": 4,
   "grace": 3,
-  "overdue": 158,
+  "overdue": 157,
   "rupees_renewed": 0,
-  "rupees_overdue": 982733,
+  "rupees_overdue": 980250,
   "rupees_in_window": 217258
  },
  "11": {
@@ -194,74 +194,74 @@
  "16": {
   "channel": "ONLINE",
   "owner": "Unassigned",
-  "total_accts": 4128,
+  "total_accts": 4132,
   "renewed": 147,
-  "outreach": 3,
+  "outreach": 4,
   "grace": 8,
-  "overdue": 861,
+  "overdue": 859,
   "rupees_renewed": 3256959,
   "rupees_overdue": 3474429,
-  "rupees_in_window": 34938
+  "rupees_in_window": 41834
  },
  "17": {
   "channel": "ONLINE",
   "owner": "Susmita",
   "total_accts": 4015,
   "renewed": 2417,
-  "outreach": 12,
-  "grace": 55,
-  "overdue": 415,
+  "outreach": 10,
+  "grace": 53,
+  "overdue": 408,
   "rupees_renewed": 60938355,
-  "rupees_overdue": 7162027,
-  "rupees_in_window": 1596000
+  "rupees_overdue": 7048193,
+  "rupees_in_window": 1447142
  },
  "18": {
   "channel": "ONLINE",
   "owner": "Chinmai Gowda",
-  "total_accts": 3857,
-  "renewed": 2116,
-  "outreach": 25,
-  "grace": 62,
-  "overdue": 571,
-  "rupees_renewed": 54111655,
-  "rupees_overdue": 9108668,
-  "rupees_in_window": 1706035
+  "total_accts": 3863,
+  "renewed": 2121,
+  "outreach": 22,
+  "grace": 58,
+  "overdue": 561,
+  "rupees_renewed": 54189810,
+  "rupees_overdue": 8954473,
+  "rupees_in_window": 1531514
  },
  "19": {
   "channel": "ONLINE",
   "owner": "Sujit",
-  "total_accts": 3800,
-  "renewed": 2284,
-  "outreach": 16,
-  "grace": 60,
-  "overdue": 392,
-  "rupees_renewed": 58642930,
-  "rupees_overdue": 6772565,
-  "rupees_in_window": 1902739
+  "total_accts": 3802,
+  "renewed": 2286,
+  "outreach": 15,
+  "grace": 56,
+  "overdue": 384,
+  "rupees_renewed": 58809510,
+  "rupees_overdue": 6572037,
+  "rupees_in_window": 1733991
  },
  "20": {
   "channel": "ONLINE",
   "owner": "Anmol Sublok",
-  "total_accts": 3717,
-  "renewed": 2255,
-  "outreach": 21,
-  "grace": 63,
-  "overdue": 344,
-  "rupees_renewed": 57697018,
-  "rupees_overdue": 5529877,
-  "rupees_in_window": 1827072
+  "total_accts": 3720,
+  "renewed": 2258,
+  "outreach": 20,
+  "grace": 57,
+  "overdue": 342,
+  "rupees_renewed": 57714191,
+  "rupees_overdue": 5464214,
+  "rupees_in_window": 1713467
  },
  "21": {
   "channel": "ONLINE",
   "owner": "Jusmita Das",
-  "total_accts": 2799,
-  "renewed": 1674,
-  "outreach": 23,
-  "grace": 40,
-  "overdue": 222,
-  "rupees_renewed": 41890078,
-  "rupees_overdue": 3540424,
-  "rupees_in_window": 1258794
+  "total_accts": 2802,
+  "renewed": 1677,
+  "outreach": 17,
+  "grace": 39,
+  "overdue": 220,
+  "rupees_renewed": 41950810,
+  "rupees_overdue": 3513330,
+  "rupees_in_window": 1101672
  },
  "22": {
   "channel": "ONLINE",
@@ -270,9 +270,9 @@
   "renewed": 885,
   "outreach": 0,
   "grace": 0,
-  "overdue": 673,
+  "overdue": 671,
   "rupees_renewed": 21936258,
-  "rupees_overdue": 9073291,
+  "rupees_overdue": 9033431,
   "rupees_in_window": null
  },
  "23": {
@@ -282,9 +282,9 @@
   "renewed": 834,
   "outreach": 0,
   "grace": 0,
-  "overdue": 237,
+  "overdue": 231,
   "rupees_renewed": 20763566,
-  "rupees_overdue": 4042645,
+  "rupees_overdue": 3868821,
   "rupees_in_window": null
  },
  "24": {
@@ -294,9 +294,9 @@
   "renewed": 603,
   "outreach": 0,
   "grace": 0,
-  "overdue": 614,
+  "overdue": 608,
   "rupees_renewed": 15463539,
-  "rupees_overdue": 8444695,
+  "rupees_overdue": 8376874,
   "rupees_in_window": null
  },
  "25": {
@@ -306,9 +306,9 @@
   "renewed": 67,
   "outreach": 0,
   "grace": 0,
-  "overdue": 528,
+  "overdue": 525,
   "rupees_renewed": 1335639,
-  "rupees_overdue": 7729631,
+  "rupees_overdue": 7636659,
   "rupees_in_window": null
  },
  "26": {
@@ -318,9 +318,9 @@
   "renewed": 80,
   "outreach": 0,
   "grace": 0,
-  "overdue": 444,
+  "overdue": 441,
   "rupees_renewed": 1582279,
-  "rupees_overdue": 5567195,
+  "rupees_overdue": 5521059,
   "rupees_in_window": null
  },
  "27": {
@@ -330,9 +330,9 @@
   "renewed": 4,
   "outreach": 0,
   "grace": 0,
-  "overdue": 275,
+  "overdue": 272,
   "rupees_renewed": 92055,
-  "rupees_overdue": 4075584,
+  "rupees_overdue": 4040208,
   "rupees_in_window": null
  },
  "28": {
@@ -342,9 +342,9 @@
   "renewed": 28,
   "outreach": 0,
   "grace": 0,
-  "overdue": 210,
+  "overdue": 209,
   "rupees_renewed": 629874,
-  "rupees_overdue": 2878648,
+  "rupees_overdue": 2845706,
   "rupees_in_window": null
  },
  "29": {
@@ -354,9 +354,9 @@
   "renewed": 6,
   "outreach": 0,
   "grace": 0,
-  "overdue": 147,
+  "overdue": 145,
   "rupees_renewed": 49640,
-  "rupees_overdue": 2070670,
+  "rupees_overdue": 2036065,
   "rupees_in_window": null
  },
  "30": {
@@ -366,9 +366,9 @@
   "renewed": 3,
   "outreach": 0,
   "grace": 0,
-  "overdue": 86,
+  "overdue": 85,
   "rupees_renewed": 53170,
-  "rupees_overdue": 1082020,
+  "rupees_overdue": 1073043,
   "rupees_in_window": null
  },
  "31": {
