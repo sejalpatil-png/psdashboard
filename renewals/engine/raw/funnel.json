@@ -1,7 +1,7 @@
 {
  "0": {
   "channel": "CLINIC",
-  "not_in_window": 3849,
+  "not_in_window": 3848,
   "outreach": 63,
   "grace_early": 150,
   "grace_late": 130,
@@ -27,7 +27,7 @@
  },
  "2": {
   "channel": "ONLINE",
-  "not_in_window": 5615,
+  "not_in_window": 5613,
   "outreach": 89,
   "grace_early": 151,
   "grace_late": 121,
