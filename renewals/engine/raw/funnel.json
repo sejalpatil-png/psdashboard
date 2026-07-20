@@ -1,41 +1,41 @@
 {
-  "0": {
-    "channel": "CLINIC",
-    "not_in_window": 2665,
-    "outreach": 9,
-    "grace_early": 111,
-    "grace_late": 113,
-    "overdue": 1138,
-    "renewed": 1310,
-    "total": 8930,
-    "rupees_in_window": 5843930,
-    "rupees_overdue": 23229059,
-    "rupees_renewed": 35563944
-  },
-  "1": {
-    "channel": "OFFLINE",
-    "not_in_window": 1635,
-    "outreach": 1,
-    "grace_early": 95,
-    "grace_late": 88,
-    "overdue": 4057,
-    "renewed": 2872,
-    "total": 10927,
-    "rupees_in_window": 3126096,
-    "rupees_overdue": 73599012,
-    "rupees_renewed": 64129524
-  },
-  "2": {
-    "channel": "ONLINE",
-    "not_in_window": 3842,
-    "outreach": 4,
-    "grace_early": 98,
-    "grace_late": 112,
-    "overdue": 5797,
-    "renewed": 13495,
-    "total": 29524,
-    "rupees_in_window": 4196047,
-    "rupees_overdue": 76066216,
-    "rupees_renewed": 340767355
-  }
+ "0": {
+  "channel": "CLINIC",
+  "not_in_window": 2649,
+  "outreach": 9,
+  "grace_early": 111,
+  "grace_late": 110,
+  "overdue": 1134,
+  "renewed": 1310,
+  "total": 8932,
+  "rupees_in_window": 5763309,
+  "rupees_overdue": 23079424,
+  "rupees_renewed": 35563944
+ },
+ "1": {
+  "channel": "OFFLINE",
+  "not_in_window": 1630,
+  "outreach": 1,
+  "grace_early": 95,
+  "grace_late": 84,
+  "overdue": 4050,
+  "renewed": 2874,
+  "total": 10929,
+  "rupees_in_window": 3064831,
+  "rupees_overdue": 73426115,
+  "rupees_renewed": 64238604
+ },
+ "2": {
+  "channel": "ONLINE",
+  "not_in_window": 3833,
+  "outreach": 4,
+  "grace_early": 98,
+  "grace_late": 111,
+  "overdue": 5779,
+  "renewed": 13497,
+  "total": 29527,
+  "rupees_in_window": 4173631,
+  "rupees_overdue": 75848204,
+  "rupees_renewed": 340843623
+ }
 }
