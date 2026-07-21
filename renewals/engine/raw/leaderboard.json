@@ -17,11 +17,11 @@
   "total_accts": 2006,
   "renewed": 412,
   "outreach": 0,
-  "grace": 40,
+  "grace": 39,
   "overdue": 331,
   "rupees_renewed": 10917374,
   "rupees_overdue": 7341046,
-  "rupees_in_window": 927282
+  "rupees_in_window": 902086
  },
  "2": {
   "channel": "CLINIC",
@@ -102,9 +102,9 @@
   "renewed": 848,
   "outreach": 0,
   "grace": 33,
-  "overdue": 782,
+  "overdue": 781,
   "rupees_renewed": 21865965,
-  "rupees_overdue": 15979683,
+  "rupees_overdue": 15968189,
   "rupees_in_window": 757368
  },
  "9": {
@@ -221,11 +221,11 @@
   "total_accts": 3883,
   "renewed": 2138,
   "outreach": 0,
-  "grace": 41,
+  "grace": 40,
   "overdue": 514,
   "rupees_renewed": 54535212,
   "rupees_overdue": 7889443,
-  "rupees_in_window": 733815
+  "rupees_in_window": 710774
  },
  "19": {
   "channel": "ONLINE",
@@ -246,9 +246,9 @@
   "renewed": 2264,
   "outreach": 0,
   "grace": 43,
-  "overdue": 315,
+  "overdue": 314,
   "rupees_renewed": 57992283,
-  "rupees_overdue": 4867189,
+  "rupees_overdue": 4857212,
   "rupees_in_window": 809966
  },
  "21": {
