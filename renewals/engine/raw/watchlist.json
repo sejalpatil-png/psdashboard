@@ -1,1 +1,722 @@
-{"0": {"channel": "ONLINE", "owner": "Sujit", "account_uid": "1Et2CTW3DvWsqZ6YgRAX", "cycle": 2, "days_overdue": 322, "old_premium": 114252, "reason": "Bad ROI-hasn't used the services"}, "1": {"channel": "ONLINE", "owner": "Shivam Sharma", "account_uid": "dQK3pHeMxSOfVFnX4DaF", "cycle": 1, "days_overdue": 1047, "old_premium": 108079, "reason": ""}, "2": {"channel": "ONLINE", "owner": "Bunty", "account_uid": "krW5xSs7tcW9ZMfqYEvO", "cycle": 2, "days_overdue": 691, "old_premium": 105746, "reason": "others"}, "3": {"channel": "ONLINE", "owner": "Anmol Sublok", "account_uid": "UzfZtscF1rNVcKnRzh5J", "cycle": 1, "days_overdue": 213, "old_premium": 104367, "reason": "Claim was rejected"}, "4": {"channel": "OFFLINE", "owner": "Neha", "account_uid": "YX6vx729jxhZnxHHSwXA", "cycle": 2, "days_overdue": 190, "old_premium": 102277, "reason": "Bought/have another insurance"}, "5": {"channel": "ONLINE", "owner": "Dishashree", "account_uid": "aXhxQWVEAHUccuJgB6Ka", "cycle": 1, "days_overdue": 132, "old_premium": 99629, "reason": "No Reason Given"}, "6": {"channel": "CLINIC", "owner": "Mahendra", "account_uid": "hvyAKPGZ6c5AfcNohw78", "cycle": 1, "days_overdue": 291, "old_premium": 95003, "reason": "Bought/have another insurance"}, "7": {"channel": "OFFLINE", "owner": "Sharan", "account_uid": "ro8CIhEukwE7uBqC64WX", "cycle": 1, "days_overdue": 529, "old_premium": 92517, "reason": "Agent purchased the plan"}, "8": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "UaAVfhERXj07PAFd5JBl", "cycle": 1, "days_overdue": 707, "old_premium": 89951, "reason": "Forever DNP"}, "9": {"channel": "ONLINE", "owner": "Arjun", "account_uid": "Tb7XpQnmCDcb1zuQ5zWM", "cycle": 2, "days_overdue": 692, "old_premium": 87832, "reason": "Bought/have another insurance"}, "10": {"channel": "ONLINE", "owner": "Vishnu V", "account_uid": "BHJvyGVN4bcqkZEdcqIj", "cycle": 1, "days_overdue": 907, "old_premium": 82071, "reason": "Bad Experience"}, "11": {"channel": "CLINIC", "owner": "Akash W", "account_uid": "rZJZB9CbA2Zz0xjwKihq", "cycle": 1, "days_overdue": 59, "old_premium": 80970, "reason": "ND"}, "12": {"channel": "ONLINE", "owner": "Susmita", "account_uid": "TTonDlFOOwSp2hB0Hylj", "cycle": 2, "days_overdue": 288, "old_premium": 80824, "reason": "Bad Experience"}, "13": {"channel": "ONLINE", "owner": "Dishashree", "account_uid": "TqFdV6hYI9zSRivBXdb0", "cycle": 1, "days_overdue": 167, "old_premium": 78718, "reason": "Bought/have another insurance"}, "14": {"channel": "OFFLINE", "owner": "Kushal", "account_uid": "RBlTFCEjM96P3It6XL2i", "cycle": 1, "days_overdue": 276, "old_premium": 78336, "reason": "Bad IPD Experience"}, "15": {"channel": "ONLINE", "owner": "Sujit", "account_uid": "tL9umMdEf3bo04YyFWou", "cycle": 3, "days_overdue": 34, "old_premium": 78129, "reason": ""}, "16": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "26dX4OWzOki2kHBRlLRW", "cycle": 1, "days_overdue": 422, "old_premium": 77960, "reason": ""}, "17": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "75udro5JuwcV70lkQqHz", "cycle": 1, "days_overdue": 705, "old_premium": 77960, "reason": "Forever DNP"}, "18": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "PG3c0NAzrwVxlXxNsC49", "cycle": 1, "days_overdue": 667, "old_premium": 77276, "reason": "Agent intervention"}, "19": {"channel": "ONLINE", "owner": "Sujit", "account_uid": "YaRwKpo7Ir5EuHuWPDVH", "cycle": 2, "days_overdue": 72, "old_premium": 76619, "reason": ""}, "20": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "xIKHqfdHu2KstcFFDkrY", "cycle": 1, "days_overdue": 493, "old_premium": 76336, "reason": "Bad Experience"}, "21": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "hq4JzGdrHu3cPXQ0JcFg", "cycle": 1, "days_overdue": 628, "old_premium": 76336, "reason": "Agent intervention"}, "22": {"channel": "ONLINE", "owner": "Shivam Sharma", "account_uid": "jEkwvZifAPPVTSFNSatw", "cycle": 1, "days_overdue": 812, "old_premium": 75797, "reason": "Bad ROI-hasn't used the services"}, "23": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "A4H6j0BEqkEkV2ZsN2vs", "cycle": 1, "days_overdue": 670, "old_premium": 75551, "reason": "No Reason Given"}, "24": {"channel": "ONLINE", "owner": "Susmita", "account_uid": "2gX9dcBlBDVndzhtEF0U", "cycle": 2, "days_overdue": 285, "old_premium": 75378, "reason": "Financial Issue"}, "25": {"channel": "ONLINE", "owner": "Priyamvada", "account_uid": "cyifu9mIaOLKhga0nIEI", "cycle": 1, "days_overdue": 828, "old_premium": 75230, "reason": "Price increase"}, "26": {"channel": "ONLINE", "owner": "Fazil", "account_uid": "1kWelyf2sA5FF4S0EJ7R", "cycle": 1, "days_overdue": 1058, "old_premium": 74650, "reason": ""}, "27": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "t2L1OfyPFSwVMAGMbW5e", "cycle": 1, "days_overdue": 633, "old_premium": 74458, "reason": "Bought/have another insurance"}, "28": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "h1bGcsFnoywLtqW9YlgD", "cycle": 1, "days_overdue": 633, "old_premium": 74449, "reason": "Agent purchased the plan"}, "29": {"channel": "OFFLINE", "owner": "Neha", "account_uid": "P8cRzi0YtaPXaFI5L74C", "cycle": 1, "days_overdue": 454, "old_premium": 74217, "reason": "No Reason Given"}, "30": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "48PQyWZuUL3QvPVjqF2B", "cycle": 1, "days_overdue": 610, "old_premium": 73234, "reason": "Customer unaware of purchase"}, "31": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "s2vJWvb3AHAQzMdDpZU3", "cycle": 1, "days_overdue": 633, "old_premium": 72986, "reason": "Price increase"}, "32": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "noK4AIb265zsDcXH3hCZ", "cycle": 1, "days_overdue": 628, "old_premium": 72850, "reason": "Agent intervention"}, "33": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "GKOJQnPVI6iaPmgSiSOx", "cycle": 1, "days_overdue": 606, "old_premium": 72720, "reason": "Agent purchased the plan"}, "34": {"channel": "ONLINE", "owner": "Susmita", "account_uid": "LLCVl5v8V62HRNy2UMEh", "cycle": 2, "days_overdue": 39, "old_premium": 71941, "reason": ""}, "35": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "zBHKMy6J90N9SJqVY1Jh", "cycle": 1, "days_overdue": 422, "old_premium": 71862, "reason": ""}, "36": {"channel": "ONLINE", "owner": "Shreya", "account_uid": "CfnpfGDE2j1bZscia6z3", "cycle": 2, "days_overdue": 692, "old_premium": 70427, "reason": "Bought/have another insurance"}, "37": {"channel": "OFFLINE", "owner": "Neha", "account_uid": "A4osIhJI83TJNYkDtgNB", "cycle": 1, "days_overdue": 266, "old_premium": 69938, "reason": "Forever DNP"}, "38": {"channel": "ONLINE", "owner": "Chinmai Gowda", "account_uid": "2FbJFGtOeVstRXOmfR25", "cycle": 1, "days_overdue": 389, "old_premium": 69620, "reason": "Bought/have another insurance"}, "39": {"channel": "OFFLINE", "owner": "Neha", "account_uid": "QQvyFdFC6xjHfHAFvHbR", "cycle": 1, "days_overdue": 210, "old_premium": 69466, "reason": "Forever DNP"}, "40": {"channel": "ONLINE", "owner": "Sujit", "account_uid": "eu7oAs66XXgGVcvX72vC", "cycle": 1, "days_overdue": 76, "old_premium": 69414, "reason": "Price increase"}, "41": {"channel": "ONLINE", "owner": "Shreya", "account_uid": "DZxCZIwwu2wUWuLifoau", "cycle": 1, "days_overdue": 837, "old_premium": 68974, "reason": ""}, "42": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "J8ZLHREcDgrG2NnboVHA", "cycle": 1, "days_overdue": 603, "old_premium": 68800, "reason": "Agent intervention"}, "43": {"channel": "CLINIC", "owner": "Akash W", "account_uid": "GrXjMipuSEm0g5vcrESp", "cycle": 1, "days_overdue": 203, "old_premium": 68706, "reason": "ND"}, "44": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "B8OrxAibRkH0H0M3iZAI", "cycle": 1, "days_overdue": 677, "old_premium": 68360, "reason": "Bought/have another insurance"}, "45": {"channel": "OFFLINE", "owner": "Sharan", "account_uid": "pNpwE7v4RKFQJczxyOgv", "cycle": 1, "days_overdue": 363, "old_premium": 68275, "reason": "Bought/have another insurance"}, "46": {"channel": "OFFLINE", "owner": "Sharan", "account_uid": "MVanQrreLBVTa9DTH3tW", "cycle": 1, "days_overdue": 268, "old_premium": 68194, "reason": ""}, "47": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "RBZ7HIhxnWMYRFSBAZYh", "cycle": 1, "days_overdue": 514, "old_premium": 68120, "reason": "Agent purchased the plan"}, "48": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "xsqJxrSSHMHgLocNXrz2", "cycle": 1, "days_overdue": 630, "old_premium": 67938, "reason": "Forever DNP"}, "49": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "H9A5rk0f34hW0SwcrSEy", "cycle": 1, "days_overdue": 631, "old_premium": 67927, "reason": "Agent intervention"}, "50": {"channel": "ONLINE", "owner": "Anmol Sublok", "account_uid": "DjOXMPysUhIGWBqMOq6B", "cycle": 1, "days_overdue": 95, "old_premium": 67580, "reason": ""}, "51": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "KF3BGkf9rCsn8j1IfEcn", "cycle": 1, "days_overdue": 603, "old_premium": 65969, "reason": "Customer unaware of purchase"}, "52": {"channel": "CLINIC", "owner": "Akash W", "account_uid": "gF8GYBvhKoVAkfvWqU9Y", "cycle": 1, "days_overdue": 242, "old_premium": 65909, "reason": "Bad Experience"}, "53": {"channel": "ONLINE", "owner": "Bunty", "account_uid": "pxvPtFiUWdqxXVqwQYXS", "cycle": 1, "days_overdue": 1033, "old_premium": 65797, "reason": ""}, "54": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "Dbf7R83BSeNNWgtN5MMX", "cycle": 1, "days_overdue": 499, "old_premium": 65529, "reason": "Agent purchased the plan"}, "55": {"channel": "ONLINE", "owner": "Vishnu V", "account_uid": "1RPq9VvXHExBkuOOtiUw", "cycle": 1, "days_overdue": 859, "old_premium": 64272, "reason": ""}, "56": {"channel": "ONLINE", "owner": "Shreya", "account_uid": "VbhDEyseTjJb3tW6RwnP", "cycle": 2, "days_overdue": 692, "old_premium": 64141, "reason": ""}, "57": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "4crMCJRagegWnchI9wQJ", "cycle": 1, "days_overdue": 243, "old_premium": 64026, "reason": "Bad Experience"}, "58": {"channel": "ONLINE", "owner": "Rishabh Bhambhoria", "account_uid": "3JVi06LVvg06MFx2DOR7", "cycle": 1, "days_overdue": 881, "old_premium": 63957, "reason": "No Reason Given"}, "59": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "XbGxOUebXxSG0cQQSLaV", "cycle": 1, "days_overdue": 633, "old_premium": 63840, "reason": "No Reason Given"}, "60": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "SjP9ZzvmI7VyAjnqFoSu", "cycle": 1, "days_overdue": 681, "old_premium": 63840, "reason": "Agent intervention"}, "61": {"channel": "ONLINE", "owner": "Susmita", "account_uid": "H0Ie9DNh2hhdoshq2u6Q", "cycle": 2, "days_overdue": 473, "old_premium": 63173, "reason": "Bad IPD Experience"}, "62": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "VTYfUkm2AQWMLbZevmJD", "cycle": 1, "days_overdue": 420, "old_premium": 63138, "reason": ""}, "63": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "LzD2xDsTtOalDfuPeIVc", "cycle": 1, "days_overdue": 668, "old_premium": 63138, "reason": "Price increase"}, "64": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "gAWKyYcTAoHpkkktFTDO", "cycle": 1, "days_overdue": 633, "old_premium": 63138, "reason": "Financial Issue"}, "65": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "UG2fp7VbuYNFYzcCzlxC", "cycle": 1, "days_overdue": 575, "old_premium": 63138, "reason": ""}, "66": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "BEPEe0fcWV1uOn1LJD4B", "cycle": 1, "days_overdue": 575, "old_premium": 63138, "reason": "Forever DNP"}, "67": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "Czze3evWqwPeCu5mGOSX", "cycle": 1, "days_overdue": 682, "old_premium": 63138, "reason": "Forever DNP"}, "68": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "gTWsE0GgyeI1QxoNgS9q", "cycle": 1, "days_overdue": 668, "old_premium": 63138, "reason": "No Reason Given"}, "69": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "fJWPR675UfbzVHoe7fBl", "cycle": 1, "days_overdue": 670, "old_premium": 63138, "reason": "Agent intervention"}, "70": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "Dj1DPaOp0bMglAilEQN9", "cycle": 1, "days_overdue": 633, "old_premium": 63138, "reason": "Financial Issue"}, "71": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "WEIKEehxlLOxo2k4nawY", "cycle": 1, "days_overdue": 670, "old_premium": 63138, "reason": "Agent intervention"}, "72": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "GUCsNuFqfBqMIY1k0RqS", "cycle": 1, "days_overdue": 606, "old_premium": 63138, "reason": "Bought/have another insurance"}, "73": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "grnOw3STFVH1N9DAWI2t", "cycle": 1, "days_overdue": 670, "old_premium": 63138, "reason": "ND"}, "74": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "d8syU6ZbLYN9THFwsV8z", "cycle": 1, "days_overdue": 670, "old_premium": 63138, "reason": "Forever DNP"}, "75": {"channel": "OFFLINE", "owner": "Vedant", "account_uid": "W38B5txVeN3EqaFB7Mu0", "cycle": 1, "days_overdue": 705, "old_premium": 63138, "reason": "Forever DNP"}, "76": {"channel": "ONLINE", "owner": "Sujit", "account_uid": "8hBCrHBUEoSVpQy4jCiE", "cycle": 1, "days_overdue": 245, "old_premium": 63017, "reason": "Bad Experience"}, "77": {"channel": "ONLINE", "owner": "Susmita", "account_uid": "CR0DeMWMJK4mc5hBBuyA", "cycle": 1, "days_overdue": 48, "old_premium": 62945, "reason": ""}, "78": {"channel": "CLINIC", "owner": "Akash W", "account_uid": "JDJCSkueINYHQWyh7muE", "cycle": 1, "days_overdue": 126, "old_premium": 62832, "reason": "others"}, "79": {"channel": "ONLINE", "owner": "Anmol Sublok", "account_uid": "5yqlHHit1EjW3d1XI55U", "cycle": 3, "days_overdue": 72, "old_premium": 62795, "reason": ""}}
+{
+ "0": {
+  "channel": "ONLINE",
+  "owner": "Sujit",
+  "account_uid": "1Et2CTW3DvWsqZ6YgRAX",
+  "cycle": 2,
+  "days_overdue": 322,
+  "old_premium": 114252,
+  "reason": "Bad ROI-hasn't used the services"
+ },
+ "1": {
+  "channel": "ONLINE",
+  "owner": "Shivam Sharma",
+  "account_uid": "dQK3pHeMxSOfVFnX4DaF",
+  "cycle": 1,
+  "days_overdue": 1047,
+  "old_premium": 108079,
+  "reason": ""
+ },
+ "2": {
+  "channel": "ONLINE",
+  "owner": "Bunty",
+  "account_uid": "krW5xSs7tcW9ZMfqYEvO",
+  "cycle": 2,
+  "days_overdue": 691,
+  "old_premium": 105746,
+  "reason": "others"
+ },
+ "3": {
+  "channel": "ONLINE",
+  "owner": "Anmol Sublok",
+  "account_uid": "UzfZtscF1rNVcKnRzh5J",
+  "cycle": 1,
+  "days_overdue": 213,
+  "old_premium": 104367,
+  "reason": "Claim was rejected"
+ },
+ "4": {
+  "channel": "OFFLINE",
+  "owner": "Neha",
+  "account_uid": "YX6vx729jxhZnxHHSwXA",
+  "cycle": 2,
+  "days_overdue": 190,
+  "old_premium": 102277,
+  "reason": "Bought/have another insurance"
+ },
+ "5": {
+  "channel": "ONLINE",
+  "owner": "Dishashree",
+  "account_uid": "aXhxQWVEAHUccuJgB6Ka",
+  "cycle": 1,
+  "days_overdue": 132,
+  "old_premium": 99629,
+  "reason": "No Reason Given"
+ },
+ "6": {
+  "channel": "CLINIC",
+  "owner": "Mahendra",
+  "account_uid": "hvyAKPGZ6c5AfcNohw78",
+  "cycle": 1,
+  "days_overdue": 291,
+  "old_premium": 95003,
+  "reason": "Bought/have another insurance"
+ },
+ "7": {
+  "channel": "OFFLINE",
+  "owner": "Sharan",
+  "account_uid": "ro8CIhEukwE7uBqC64WX",
+  "cycle": 1,
+  "days_overdue": 529,
+  "old_premium": 92517,
+  "reason": "Agent purchased the plan"
+ },
+ "8": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "UaAVfhERXj07PAFd5JBl",
+  "cycle": 1,
+  "days_overdue": 707,
+  "old_premium": 89951,
+  "reason": "Forever DNP"
+ },
+ "9": {
+  "channel": "ONLINE",
+  "owner": "Arjun",
+  "account_uid": "Tb7XpQnmCDcb1zuQ5zWM",
+  "cycle": 2,
+  "days_overdue": 692,
+  "old_premium": 87832,
+  "reason": "Bought/have another insurance"
+ },
+ "10": {
+  "channel": "ONLINE",
+  "owner": "Vishnu V",
+  "account_uid": "BHJvyGVN4bcqkZEdcqIj",
+  "cycle": 1,
+  "days_overdue": 907,
+  "old_premium": 82071,
+  "reason": "Bad Experience"
+ },
+ "11": {
+  "channel": "CLINIC",
+  "owner": "Akash W",
+  "account_uid": "rZJZB9CbA2Zz0xjwKihq",
+  "cycle": 1,
+  "days_overdue": 59,
+  "old_premium": 80970,
+  "reason": "ND"
+ },
+ "12": {
+  "channel": "ONLINE",
+  "owner": "Susmita",
+  "account_uid": "TTonDlFOOwSp2hB0Hylj",
+  "cycle": 2,
+  "days_overdue": 288,
+  "old_premium": 80824,
+  "reason": "Bad Experience"
+ },
+ "13": {
+  "channel": "ONLINE",
+  "owner": "Dishashree",
+  "account_uid": "TqFdV6hYI9zSRivBXdb0",
+  "cycle": 1,
+  "days_overdue": 167,
+  "old_premium": 78718,
+  "reason": "Bought/have another insurance"
+ },
+ "14": {
+  "channel": "OFFLINE",
+  "owner": "Kushal",
+  "account_uid": "RBlTFCEjM96P3It6XL2i",
+  "cycle": 1,
+  "days_overdue": 276,
+  "old_premium": 78336,
+  "reason": "Bad IPD Experience"
+ },
+ "15": {
+  "channel": "ONLINE",
+  "owner": "Sujit",
+  "account_uid": "tL9umMdEf3bo04YyFWou",
+  "cycle": 3,
+  "days_overdue": 34,
+  "old_premium": 78129,
+  "reason": ""
+ },
+ "16": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "26dX4OWzOki2kHBRlLRW",
+  "cycle": 1,
+  "days_overdue": 422,
+  "old_premium": 77960,
+  "reason": ""
+ },
+ "17": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "75udro5JuwcV70lkQqHz",
+  "cycle": 1,
+  "days_overdue": 705,
+  "old_premium": 77960,
+  "reason": "Forever DNP"
+ },
+ "18": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "PG3c0NAzrwVxlXxNsC49",
+  "cycle": 1,
+  "days_overdue": 667,
+  "old_premium": 77276,
+  "reason": "Agent intervention"
+ },
+ "19": {
+  "channel": "ONLINE",
+  "owner": "Sujit",
+  "account_uid": "YaRwKpo7Ir5EuHuWPDVH",
+  "cycle": 2,
+  "days_overdue": 72,
+  "old_premium": 76619,
+  "reason": ""
+ },
+ "20": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "xIKHqfdHu2KstcFFDkrY",
+  "cycle": 1,
+  "days_overdue": 493,
+  "old_premium": 76336,
+  "reason": "Bad Experience"
+ },
+ "21": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "hq4JzGdrHu3cPXQ0JcFg",
+  "cycle": 1,
+  "days_overdue": 628,
+  "old_premium": 76336,
+  "reason": "Agent intervention"
+ },
+ "22": {
+  "channel": "ONLINE",
+  "owner": "Shivam Sharma",
+  "account_uid": "jEkwvZifAPPVTSFNSatw",
+  "cycle": 1,
+  "days_overdue": 812,
+  "old_premium": 75797,
+  "reason": "Bad ROI-hasn't used the services"
+ },
+ "23": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "A4H6j0BEqkEkV2ZsN2vs",
+  "cycle": 1,
+  "days_overdue": 670,
+  "old_premium": 75551,
+  "reason": "No Reason Given"
+ },
+ "24": {
+  "channel": "ONLINE",
+  "owner": "Susmita",
+  "account_uid": "2gX9dcBlBDVndzhtEF0U",
+  "cycle": 2,
+  "days_overdue": 285,
+  "old_premium": 75378,
+  "reason": "Financial Issue"
+ },
+ "25": {
+  "channel": "ONLINE",
+  "owner": "Priyamvada",
+  "account_uid": "cyifu9mIaOLKhga0nIEI",
+  "cycle": 1,
+  "days_overdue": 828,
+  "old_premium": 75230,
+  "reason": "Price increase"
+ },
+ "26": {
+  "channel": "ONLINE",
+  "owner": "Fazil",
+  "account_uid": "1kWelyf2sA5FF4S0EJ7R",
+  "cycle": 1,
+  "days_overdue": 1058,
+  "old_premium": 74650,
+  "reason": ""
+ },
+ "27": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "t2L1OfyPFSwVMAGMbW5e",
+  "cycle": 1,
+  "days_overdue": 633,
+  "old_premium": 74458,
+  "reason": "Bought/have another insurance"
+ },
+ "28": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "h1bGcsFnoywLtqW9YlgD",
+  "cycle": 1,
+  "days_overdue": 633,
+  "old_premium": 74449,
+  "reason": "Agent purchased the plan"
+ },
+ "29": {
+  "channel": "OFFLINE",
+  "owner": "Neha",
+  "account_uid": "P8cRzi0YtaPXaFI5L74C",
+  "cycle": 1,
+  "days_overdue": 454,
+  "old_premium": 74217,
+  "reason": "No Reason Given"
+ },
+ "30": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "48PQyWZuUL3QvPVjqF2B",
+  "cycle": 1,
+  "days_overdue": 610,
+  "old_premium": 73234,
+  "reason": "Customer unaware of purchase"
+ },
+ "31": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "s2vJWvb3AHAQzMdDpZU3",
+  "cycle": 1,
+  "days_overdue": 633,
+  "old_premium": 72986,
+  "reason": "Price increase"
+ },
+ "32": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "noK4AIb265zsDcXH3hCZ",
+  "cycle": 1,
+  "days_overdue": 628,
+  "old_premium": 72850,
+  "reason": "Agent intervention"
+ },
+ "33": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "GKOJQnPVI6iaPmgSiSOx",
+  "cycle": 1,
+  "days_overdue": 606,
+  "old_premium": 72720,
+  "reason": "Agent purchased the plan"
+ },
+ "34": {
+  "channel": "ONLINE",
+  "owner": "Susmita",
+  "account_uid": "LLCVl5v8V62HRNy2UMEh",
+  "cycle": 2,
+  "days_overdue": 39,
+  "old_premium": 71941,
+  "reason": ""
+ },
+ "35": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "zBHKMy6J90N9SJqVY1Jh",
+  "cycle": 1,
+  "days_overdue": 422,
+  "old_premium": 71862,
+  "reason": ""
+ },
+ "36": {
+  "channel": "ONLINE",
+  "owner": "Shreya",
+  "account_uid": "CfnpfGDE2j1bZscia6z3",
+  "cycle": 2,
+  "days_overdue": 692,
+  "old_premium": 70427,
+  "reason": "Bought/have another insurance"
+ },
+ "37": {
+  "channel": "OFFLINE",
+  "owner": "Neha",
+  "account_uid": "A4osIhJI83TJNYkDtgNB",
+  "cycle": 1,
+  "days_overdue": 266,
+  "old_premium": 69938,
+  "reason": "Forever DNP"
+ },
+ "38": {
+  "channel": "ONLINE",
+  "owner": "Chinmai Gowda",
+  "account_uid": "2FbJFGtOeVstRXOmfR25",
+  "cycle": 1,
+  "days_overdue": 389,
+  "old_premium": 69620,
+  "reason": "Bought/have another insurance"
+ },
+ "39": {
+  "channel": "OFFLINE",
+  "owner": "Neha",
+  "account_uid": "QQvyFdFC6xjHfHAFvHbR",
+  "cycle": 1,
+  "days_overdue": 210,
+  "old_premium": 69466,
+  "reason": "Forever DNP"
+ },
+ "40": {
+  "channel": "ONLINE",
+  "owner": "Sujit",
+  "account_uid": "eu7oAs66XXgGVcvX72vC",
+  "cycle": 1,
+  "days_overdue": 76,
+  "old_premium": 69414,
+  "reason": "Price increase"
+ },
+ "41": {
+  "channel": "ONLINE",
+  "owner": "Shreya",
+  "account_uid": "DZxCZIwwu2wUWuLifoau",
+  "cycle": 1,
+  "days_overdue": 837,
+  "old_premium": 68974,
+  "reason": ""
+ },
+ "42": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "J8ZLHREcDgrG2NnboVHA",
+  "cycle": 1,
+  "days_overdue": 603,
+  "old_premium": 68800,
+  "reason": "Agent intervention"
+ },
+ "43": {
+  "channel": "CLINIC",
+  "owner": "Akash W",
+  "account_uid": "GrXjMipuSEm0g5vcrESp",
+  "cycle": 1,
+  "days_overdue": 203,
+  "old_premium": 68706,
+  "reason": "ND"
+ },
+ "44": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "B8OrxAibRkH0H0M3iZAI",
+  "cycle": 1,
+  "days_overdue": 677,
+  "old_premium": 68360,
+  "reason": "Bought/have another insurance"
+ },
+ "45": {
+  "channel": "OFFLINE",
+  "owner": "Sharan",
+  "account_uid": "pNpwE7v4RKFQJczxyOgv",
+  "cycle": 1,
+  "days_overdue": 363,
+  "old_premium": 68275,
+  "reason": "Bought/have another insurance"
+ },
+ "46": {
+  "channel": "OFFLINE",
+  "owner": "Sharan",
+  "account_uid": "MVanQrreLBVTa9DTH3tW",
+  "cycle": 1,
+  "days_overdue": 268,
+  "old_premium": 68194,
+  "reason": ""
+ },
+ "47": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "RBZ7HIhxnWMYRFSBAZYh",
+  "cycle": 1,
+  "days_overdue": 514,
+  "old_premium": 68120,
+  "reason": "Agent purchased the plan"
+ },
+ "48": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "xsqJxrSSHMHgLocNXrz2",
+  "cycle": 1,
+  "days_overdue": 630,
+  "old_premium": 67938,
+  "reason": "Forever DNP"
+ },
+ "49": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "H9A5rk0f34hW0SwcrSEy",
+  "cycle": 1,
+  "days_overdue": 631,
+  "old_premium": 67927,
+  "reason": "Agent intervention"
+ },
+ "50": {
+  "channel": "ONLINE",
+  "owner": "Anmol Sublok",
+  "account_uid": "DjOXMPysUhIGWBqMOq6B",
+  "cycle": 1,
+  "days_overdue": 95,
+  "old_premium": 67580,
+  "reason": ""
+ },
+ "51": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "KF3BGkf9rCsn8j1IfEcn",
+  "cycle": 1,
+  "days_overdue": 603,
+  "old_premium": 65969,
+  "reason": "Customer unaware of purchase"
+ },
+ "52": {
+  "channel": "CLINIC",
+  "owner": "Akash W",
+  "account_uid": "gF8GYBvhKoVAkfvWqU9Y",
+  "cycle": 1,
+  "days_overdue": 242,
+  "old_premium": 65909,
+  "reason": "Bad Experience"
+ },
+ "53": {
+  "channel": "ONLINE",
+  "owner": "Bunty",
+  "account_uid": "pxvPtFiUWdqxXVqwQYXS",
+  "cycle": 1,
+  "days_overdue": 1033,
+  "old_premium": 65797,
+  "reason": ""
+ },
+ "54": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "Dbf7R83BSeNNWgtN5MMX",
+  "cycle": 1,
+  "days_overdue": 499,
+  "old_premium": 65529,
+  "reason": "Agent purchased the plan"
+ },
+ "55": {
+  "channel": "ONLINE",
+  "owner": "Vishnu V",
+  "account_uid": "1RPq9VvXHExBkuOOtiUw",
+  "cycle": 1,
+  "days_overdue": 859,
+  "old_premium": 64272,
+  "reason": ""
+ },
+ "56": {
+  "channel": "ONLINE",
+  "owner": "Shreya",
+  "account_uid": "VbhDEyseTjJb3tW6RwnP",
+  "cycle": 2,
+  "days_overdue": 692,
+  "old_premium": 64141,
+  "reason": ""
+ },
+ "57": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "4crMCJRagegWnchI9wQJ",
+  "cycle": 1,
+  "days_overdue": 243,
+  "old_premium": 64026,
+  "reason": "Bad Experience"
+ },
+ "58": {
+  "channel": "ONLINE",
+  "owner": "Rishabh Bhambhoria",
+  "account_uid": "3JVi06LVvg06MFx2DOR7",
+  "cycle": 1,
+  "days_overdue": 881,
+  "old_premium": 63957,
+  "reason": "No Reason Given"
+ },
+ "59": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "XbGxOUebXxSG0cQQSLaV",
+  "cycle": 1,
+  "days_overdue": 633,
+  "old_premium": 63840,
+  "reason": "No Reason Given"
+ },
+ "60": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "SjP9ZzvmI7VyAjnqFoSu",
+  "cycle": 1,
+  "days_overdue": 681,
+  "old_premium": 63840,
+  "reason": "Agent intervention"
+ },
+ "61": {
+  "channel": "ONLINE",
+  "owner": "Susmita",
+  "account_uid": "H0Ie9DNh2hhdoshq2u6Q",
+  "cycle": 2,
+  "days_overdue": 473,
+  "old_premium": 63173,
+  "reason": "Bad IPD Experience"
+ },
+ "62": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "VTYfUkm2AQWMLbZevmJD",
+  "cycle": 1,
+  "days_overdue": 420,
+  "old_premium": 63138,
+  "reason": ""
+ },
+ "63": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "LzD2xDsTtOalDfuPeIVc",
+  "cycle": 1,
+  "days_overdue": 668,
+  "old_premium": 63138,
+  "reason": "Price increase"
+ },
+ "64": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "gAWKyYcTAoHpkkktFTDO",
+  "cycle": 1,
+  "days_overdue": 633,
+  "old_premium": 63138,
+  "reason": "Financial Issue"
+ },
+ "65": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "UG2fp7VbuYNFYzcCzlxC",
+  "cycle": 1,
+  "days_overdue": 575,
+  "old_premium": 63138,
+  "reason": ""
+ },
+ "66": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "BEPEe0fcWV1uOn1LJD4B",
+  "cycle": 1,
+  "days_overdue": 575,
+  "old_premium": 63138,
+  "reason": "Forever DNP"
+ },
+ "67": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "Czze3evWqwPeCu5mGOSX",
+  "cycle": 1,
+  "days_overdue": 682,
+  "old_premium": 63138,
+  "reason": "Forever DNP"
+ },
+ "68": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "gTWsE0GgyeI1QxoNgS9q",
+  "cycle": 1,
+  "days_overdue": 668,
+  "old_premium": 63138,
+  "reason": "No Reason Given"
+ },
+ "69": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "fJWPR675UfbzVHoe7fBl",
+  "cycle": 1,
+  "days_overdue": 670,
+  "old_premium": 63138,
+  "reason": "Agent intervention"
+ },
+ "70": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "Dj1DPaOp0bMglAilEQN9",
+  "cycle": 1,
+  "days_overdue": 633,
+  "old_premium": 63138,
+  "reason": "Financial Issue"
+ },
+ "71": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "WEIKEehxlLOxo2k4nawY",
+  "cycle": 1,
+  "days_overdue": 670,
+  "old_premium": 63138,
+  "reason": "Agent intervention"
+ },
+ "72": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "GUCsNuFqfBqMIY1k0RqS",
+  "cycle": 1,
+  "days_overdue": 606,
+  "old_premium": 63138,
+  "reason": "Bought/have another insurance"
+ },
+ "73": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "grnOw3STFVH1N9DAWI2t",
+  "cycle": 1,
+  "days_overdue": 670,
+  "old_premium": 63138,
+  "reason": "ND"
+ },
+ "74": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "d8syU6ZbLYN9THFwsV8z",
+  "cycle": 1,
+  "days_overdue": 670,
+  "old_premium": 63138,
+  "reason": "Forever DNP"
+ },
+ "75": {
+  "channel": "OFFLINE",
+  "owner": "Vedant",
+  "account_uid": "W38B5txVeN3EqaFB7Mu0",
+  "cycle": 1,
+  "days_overdue": 705,
+  "old_premium": 63138,
+  "reason": "Forever DNP"
+ },
+ "76": {
+  "channel": "ONLINE",
+  "owner": "Sujit",
+  "account_uid": "8hBCrHBUEoSVpQy4jCiE",
+  "cycle": 1,
+  "days_overdue": 245,
+  "old_premium": 63017,
+  "reason": "Bad Experience"
+ },
+ "77": {
+  "channel": "ONLINE",
+  "owner": "Susmita",
+  "account_uid": "CR0DeMWMJK4mc5hBBuyA",
+  "cycle": 1,
+  "days_overdue": 48,
+  "old_premium": 62945,
+  "reason": ""
+ },
+ "78": {
+  "channel": "CLINIC",
+  "owner": "Akash W",
+  "account_uid": "JDJCSkueINYHQWyh7muE",
+  "cycle": 1,
+  "days_overdue": 126,
+  "old_premium": 62832,
+  "reason": "others"
+ },
+ "79": {
+  "channel": "ONLINE",
+  "owner": "Anmol Sublok",
+  "account_uid": "5yqlHHit1EjW3d1XI55U",
+  "cycle": 3,
+  "days_overdue": 72,
+  "old_premium": 62795,
+  "reason": ""
+ }
+}
